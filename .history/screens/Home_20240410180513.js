@@ -10,7 +10,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "./AuthContext";
 import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
-import ExpenseItem from "../components/ExpenseItem";
 const Home = ({ route }) => {
   const { updateData, setUpdateData, id, setIsPremium } =
     useContext(AuthContext);
@@ -171,9 +170,7 @@ const Home = ({ route }) => {
         </LinearGradient>
         <LinearGradient colors={["#BEADFA", "#FDCEDF"]} style={styles.body}>
           <View style={styles.expenseDetail}>
-            <ExpenseItem data={income} type="Income" />
-
-            {/* <Text style={styles.expenseHeader}>Income</Text>
+            <Text style={styles.expenseHeader}>Income</Text>
             {income.length > 0 ? (
               <>
                 {income.map((income, index) => (
@@ -217,11 +214,10 @@ const Home = ({ route }) => {
               </>
             ) : (
               <Text>No income</Text>
-            )} */}
+            )}
           </View>
           <View style={styles.expenseDetail}>
-            <ExpenseItem data={expenses} type="Expense" />
-            {/* <Text style={styles.expenseHeader}>Expenses</Text>
+            <Text style={styles.expenseHeader}>Expenses</Text>
             {expenses.length > 0 ? (
               <>
                 {expenses.map((expense, index) => (
@@ -263,7 +259,7 @@ const Home = ({ route }) => {
               </>
             ) : (
               <Text>No expenses</Text>
-            )} */}
+            )}
           </View>
         </LinearGradient>
       </SafeAreaView>

@@ -171,9 +171,7 @@ const Home = ({ route }) => {
         </LinearGradient>
         <LinearGradient colors={["#BEADFA", "#FDCEDF"]} style={styles.body}>
           <View style={styles.expenseDetail}>
-            <ExpenseItem data={income} type="Income" />
-
-            {/* <Text style={styles.expenseHeader}>Income</Text>
+            <Text style={styles.expenseHeader}>Income</Text>
             {income.length > 0 ? (
               <>
                 {income.map((income, index) => (
@@ -182,16 +180,15 @@ const Home = ({ route }) => {
                       <Text
                         style={{
                           fontWeight: "bold",
-                          // backgroundColor: "black",
                           width: 110,
                           paddingBottom: 5,
                           fontSize: 15,
                         }}
                       >
-                        {income.categoriesIncome}
+                        {incomeItem.categoriesIncome}
                       </Text>
-                      <Text style={{ fontSize: 10, fontSize: 13, width: 110 }}>
-                        {income.note}
+                      <Text style={{ fontSize: 13, width: 110 }}>
+                        {incomeItem.note}
                       </Text>
                     </View>
                     <View style={styles.expenseDetails}>
@@ -203,10 +200,10 @@ const Home = ({ route }) => {
                           marginRight: -10,
                         }}
                       >
-                        + {parseFloat(income.value || 0)} $
+                        + {parseFloat(incomeItem.value || 0)} $
                       </Text>
                       <Text style={{ fontSize: 12, marginTop: 5 }}>
-                        {income.date}
+                        {incomeItem.date}
                       </Text>
                     </View>
                     {index < income.length - 1 && (
@@ -217,11 +214,10 @@ const Home = ({ route }) => {
               </>
             ) : (
               <Text>No income</Text>
-            )} */}
+            )}
           </View>
           <View style={styles.expenseDetail}>
-            <ExpenseItem data={expenses} type="Expense" />
-            {/* <Text style={styles.expenseHeader}>Expenses</Text>
+            <Text style={styles.expenseHeader}>Expenses</Text>
             {expenses.length > 0 ? (
               <>
                 {expenses.map((expense, index) => (
@@ -235,27 +231,28 @@ const Home = ({ route }) => {
                           fontSize: 15,
                         }}
                       >
-                        {expense.categoriesExpenses}
+                        {expenseItem.categoriesIncome}
                       </Text>
-                      <Text style={{ fontSize: 10, fontSize: 13, width: 110 }}>
-                        {expense.note}
+                      <Text style={{ fontSize: 13, width: 110 }}>
+                        {incomeItem.note}
                       </Text>
                     </View>
                     <View style={styles.expenseDetails}>
                       <Text
                         style={{
-                          color: "#D80032",
+                          color: "#1F8A70",
                           fontWeight: "bold",
                           fontSize: 17,
+                          marginRight: -10,
                         }}
                       >
-                        - {parseFloat(expense.value || 0)} $
+                        + {parseFloat(incomeItem.value || 0)} $
                       </Text>
                       <Text style={{ fontSize: 12, marginTop: 5 }}>
-                        {expense.date}
+                        {incomeItem.date}
                       </Text>
                     </View>
-                    {index < expenses.length - 1 && (
+                    {index < income.length - 1 && (
                       <View style={styles.divider} />
                     )}
                   </View>
@@ -263,7 +260,7 @@ const Home = ({ route }) => {
               </>
             ) : (
               <Text>No expenses</Text>
-            )} */}
+            )}
           </View>
         </LinearGradient>
       </SafeAreaView>

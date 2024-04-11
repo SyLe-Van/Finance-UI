@@ -10,7 +10,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { AuthContext } from "./AuthContext";
 import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
-import ExpenseItem from "../components/ExpenseItem";
 const Home = ({ route }) => {
   const { updateData, setUpdateData, id, setIsPremium } =
     useContext(AuthContext);
@@ -85,7 +84,6 @@ const Home = ({ route }) => {
     });
     return totalIncome;
   };
-
   const totalSalary = calculateTotalIncomeByCategory("Salary");
   const totalBonus = calculateTotalIncomeByCategory("Bonus");
   const totalAllowance = calculateTotalIncomeByCategory("Allowance");
@@ -171,9 +169,54 @@ const Home = ({ route }) => {
         </LinearGradient>
         <LinearGradient colors={["#BEADFA", "#FDCEDF"]} style={styles.body}>
           <View style={styles.expenseDetail}>
-            <ExpenseItem data={income} type="Income" />
+            <Text style={styles.expenseHeader}>Expenses</Text>
+            {expenses.length > 0 ? (
+              <>
+                {expenses.map((expense, index) => (
+                  <View key={index} style={styles.expenseRow}>
+                    <View style={styles.expenseCategory}>
+                      <Text
+                        style={{
+                          fontWeight: "bold",
+                          // backgroundColor: "black",
+                          width: 110,
+                          paddingBottom: 5,
+                          fontSize: 15,
+                        }}
+                      >
+                        {expense.categoriesExpenses}
+                      </Text>
+                      <Text style={{ fontSize: 10, fontSize: 13, width: 110 }}>
+                        {expense.note}
+                      </Text>
+                    </View>
+                    <View style={styles.expenseDetails}>
+                      <Text
+                        style={{
+                          color: "#D80032",
+                          fontWeight: "bold",
+                          fontSize: 17,
+                        }}
+                      >
+                        - {parseFloat(expense.value || 0)} $
+                      </Text>
+                      <Text style={{ fontSize: 12, marginTop: 5 }}>
+                        {expense.date}
+                      </Text>
+                    </View>
+                    {index < expenses.length - 1 && (
+                      <View style={styles.divider} />
+                    )}
+                  </View>
+                ))}
+              </>
+            ) : (
+              <Text>No expenses</Text>
+            )}
+          </View>
 
-            {/* <Text style={styles.expenseHeader}>Income</Text>
+          <View style={styles.expenseDetail}>
+            <Text style={styles.expenseHeader}>Income</Text>
             {income.length > 0 ? (
               <>
                 {income.map((income, index) => (
@@ -217,53 +260,7 @@ const Home = ({ route }) => {
               </>
             ) : (
               <Text>No income</Text>
-            )} */}
-          </View>
-          <View style={styles.expenseDetail}>
-            <ExpenseItem data={expenses} type="Expense" />
-            {/* <Text style={styles.expenseHeader}>Expenses</Text>
-            {expenses.length > 0 ? (
-              <>
-                {expenses.map((expense, index) => (
-                  <View key={index} style={styles.expenseRow}>
-                    <View style={styles.expenseCategory}>
-                      <Text
-                        style={{
-                          fontWeight: "bold",
-                          width: 110,
-                          paddingBottom: 5,
-                          fontSize: 15,
-                        }}
-                      >
-                        {expense.categoriesExpenses}
-                      </Text>
-                      <Text style={{ fontSize: 10, fontSize: 13, width: 110 }}>
-                        {expense.note}
-                      </Text>
-                    </View>
-                    <View style={styles.expenseDetails}>
-                      <Text
-                        style={{
-                          color: "#D80032",
-                          fontWeight: "bold",
-                          fontSize: 17,
-                        }}
-                      >
-                        - {parseFloat(expense.value || 0)} $
-                      </Text>
-                      <Text style={{ fontSize: 12, marginTop: 5 }}>
-                        {expense.date}
-                      </Text>
-                    </View>
-                    {index < expenses.length - 1 && (
-                      <View style={styles.divider} />
-                    )}
-                  </View>
-                ))}
-              </>
-            ) : (
-              <Text>No expenses</Text>
-            )} */}
+            )}
           </View>
         </LinearGradient>
       </SafeAreaView>
@@ -330,18 +327,19 @@ const styles = StyleSheet.create({
   },
   expenseHeader: {
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 16,
     marginBottom: 10,
     textAlign: "center",
   },
   expenseRow: {
     flexDirection: "row",
     justifyContent: "space-between",
+    // alignItems: 'center',
     alignItems: "center",
     marginBottom: 5,
     marginTop: 5,
     borderRadius: 15,
-    backgroundColor: "gray",
+    // backgroundColor: "black",
     marginLeft: 15,
     marginRight: 10,
   },

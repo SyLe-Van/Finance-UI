@@ -172,7 +172,6 @@ const Home = ({ route }) => {
         <LinearGradient colors={["#BEADFA", "#FDCEDF"]} style={styles.body}>
           <View style={styles.expenseDetail}>
             <ExpenseItem data={income} type="Income" />
-
             {/* <Text style={styles.expenseHeader}>Income</Text>
             {income.length > 0 ? (
               <>

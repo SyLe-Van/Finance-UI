@@ -48,22 +48,22 @@ const Home = ({ route }) => {
       });
   }, [updateData]);
 
-  useEffect(() => {
-    console.log(id);
-    axios
-      .get(`https://finance-api-kgh1.onrender.com/api/getIncomes/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        const reversedIncome = response.data.reverse();
-        setIncome(reversedIncome);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [updateData]);
+  // useEffect(() => {
+  //   console.log(id);
+  //   axios
+  //     .get(`https://finance-api-kgh1.onrender.com/api/getIncomes/${id}`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     })
+  //     .then((response) => {
+  //       const reversedIncome = response.data.reverse();
+  //       setIncome(reversedIncome);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, [updateData]);
 
   useEffect(() => {
     if (route.params && route.params.expenses) {
@@ -171,9 +171,7 @@ const Home = ({ route }) => {
         </LinearGradient>
         <LinearGradient colors={["#BEADFA", "#FDCEDF"]} style={styles.body}>
           <View style={styles.expenseDetail}>
-            <ExpenseItem data={income} type="Income" />
-
-            {/* <Text style={styles.expenseHeader}>Income</Text>
+            <Text style={styles.expenseHeader}>Income</Text>
             {income.length > 0 ? (
               <>
                 {income.map((income, index) => (
@@ -217,53 +215,19 @@ const Home = ({ route }) => {
               </>
             ) : (
               <Text>No income</Text>
-            )} */}
+            )}
           </View>
           <View style={styles.expenseDetail}>
-            <ExpenseItem data={expenses} type="Expense" />
-            {/* <Text style={styles.expenseHeader}>Expenses</Text>
+            <Text style={styles.expenseHeader}>Expenses</Text>
             {expenses.length > 0 ? (
               <>
                 {expenses.map((expense, index) => (
-                  <View key={index} style={styles.expenseRow}>
-                    <View style={styles.expenseCategory}>
-                      <Text
-                        style={{
-                          fontWeight: "bold",
-                          width: 110,
-                          paddingBottom: 5,
-                          fontSize: 15,
-                        }}
-                      >
-                        {expense.categoriesExpenses}
-                      </Text>
-                      <Text style={{ fontSize: 10, fontSize: 13, width: 110 }}>
-                        {expense.note}
-                      </Text>
-                    </View>
-                    <View style={styles.expenseDetails}>
-                      <Text
-                        style={{
-                          color: "#D80032",
-                          fontWeight: "bold",
-                          fontSize: 17,
-                        }}
-                      >
-                        - {parseFloat(expense.value || 0)} $
-                      </Text>
-                      <Text style={{ fontSize: 12, marginTop: 5 }}>
-                        {expense.date}
-                      </Text>
-                    </View>
-                    {index < expenses.length - 1 && (
-                      <View style={styles.divider} />
-                    )}
-                  </View>
+                  <ExpenseItem />
                 ))}
               </>
             ) : (
               <Text>No expenses</Text>
-            )} */}
+            )}
           </View>
         </LinearGradient>
       </SafeAreaView>
