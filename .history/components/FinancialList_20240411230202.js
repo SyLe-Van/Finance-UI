@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, FlatList } from "react-native";
-
-export default function ExpenseItem({ data, type }) {
+import FinancialItem from "./FinancialItem";
+export default function FinancialList({ data, type }) {
   return (
     <View>
       <Text style={styles.expenseHeader}>{type}</Text>
@@ -9,8 +9,9 @@ export default function ExpenseItem({ data, type }) {
         data={data}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <View style={styles.expenseRow}>
-            <View style={styles.expenseCategory}>
+          <View>
+            <FinancialItem item={item} type={type} />
+            {/* <View style={styles.expenseCategory}>
               <Text
                 style={{
                   fontWeight: "bold",
@@ -40,7 +41,7 @@ export default function ExpenseItem({ data, type }) {
                 $
               </Text>
               <Text style={{ fontSize: 12, marginTop: 5 }}>{item.date}</Text>
-            </View>
+            </View> */}
           </View>
         )}
         ListEmptyComponent={() => (
@@ -68,10 +69,10 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginRight: 10,
   },
-  expenseCategory: {
-    flex: 1,
-    // marginRight: 130,
-    // justifyContent: 'space-between',
-    // alignItems: 'center',
-  },
+  // expenseCategory: {
+  //   flex: 1,
+  //   // marginRight: 130,
+  //   // justifyContent: 'space-between',
+  //   // alignItems: 'center',
+  // },
 });

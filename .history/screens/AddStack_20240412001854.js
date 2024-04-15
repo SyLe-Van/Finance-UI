@@ -1,0 +1,35 @@
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import AddExpenses from "./AddExpenses";
+import AddIncome from "./AddIncome";
+import ManageFinancial from "./ManageFinancial";
+
+const Stack = createStackNavigator();
+export const AddStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="AddExpenses"
+        component={AddExpenses}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AddIncome"
+        component={AddIncome}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+};
+const ManageFinancialStack = createStackNavigator();
+export const ManageStackScreen = () => {
+  return (
+    <ManageFinancialStack.Navigator>
+      <ManageFinancialStack.Screen
+        name="ManageFinancial"
+        component={ManageFinancial}
+        options={{ headerShown: false }}
+      />
+    </ManageFinancialStack.Navigator>
+  );
+};
