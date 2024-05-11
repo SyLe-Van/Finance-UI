@@ -1,0 +1,15 @@
+import { View, Text, LinearGradient, StyleSheet } from "react-native";
+export default function () {
+  return (
+    <LinearGradient
+      colors={["#FDCEDF", "#BEADFA"]}
+      style={styles.rootContainer}
+    >
+      <Text>hi</Text>
+    </LinearGradient>
+  );
+}
+
+const styles = StyleSheet.create({
+  rootContainer: {},
+});
