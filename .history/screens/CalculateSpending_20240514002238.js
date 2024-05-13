@@ -9,10 +9,10 @@ import {
   Platform,
 } from "react-native";
 import axios from "axios";
-import Input from "../components/Input";
 import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation } from "@react-navigation/native";
+import SpendingInfo from "../components/SpendingInfo";
 import ButtonHandler from "../components/ButtonHandler";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Display from "../components/Display";
 import { AuthContext } from "./AuthContext";
 
@@ -20,13 +20,8 @@ export default function CalculateSpending() {
   const [spendingItems, setSpendingItems] = useState([]);
   const [pressedIndexes, setPressedIndexes] = useState([]);
   const [nameGroup, setNameGroup] = useState("");
-  const [members, setMembers] = useState([]);
-  const { id, groupId } = useContext(AuthContext);
+  const { id, groupId, updateData, setUpdateData } = useContext(AuthContext);
   const flatListRef = useRef(null);
-  const navigation = useNavigation();
-  useEffect(() => {
-    console.log("spendingItem:", spendingItems);
-  }, [spendingItems]);
   useEffect(() => {
     if (id && groupId) {
       axios
@@ -37,8 +32,6 @@ export default function CalculateSpending() {
           const data = response.data;
           console.log(data);
           setNameGroup(data.name_group);
-          const Members = data.member;
-          setMembers(Members);
           const payList = data.pay_list.map((item, index) => ({
             id: item._id,
             selectedMember: item.member_name,
@@ -53,47 +46,22 @@ export default function CalculateSpending() {
         });
     }
   }, [id, groupId]);
-
-  useEffect(() => {
-    console.log("members updated:", members);
-  }, [members]);
-
   const renderSpendingInfo = ({ item, index }) => (
     <TouchableHighlight
       underlayColor="#BEADFA"
       style={[styles.touch, pressedIndexes.includes(index) && styles.pressed]}
     >
       <View style={styles.spendingInfoWrapper}>
-        <View style={styles.infoContainer}>
-          <View style={styles.name_cost}>
-            <Input
-              title="Name: "
-              width={150}
-              value={item.selectedMember}
-              editable={false}
-            />
-            <Input
-              title="Cost"
-              width={150}
-              value={item.value}
-              editable={false}
-            />
-          </View>
-          <View style={styles.note}>
-            <Input
-              title="Notes"
-              width={315}
-              value={item.note.toString()}
-              editable={false}
-            />
-          </View>
-        </View>
+        <SpendingInfo
+          key={item.id}
+          selectedMember={item.selectedMember}
+          value={item.value}
+          note={item.note}
+        />
       </View>
     </TouchableHighlight>
   );
-  const splitBillHandler = () => {
-    navigation.navigate("PaymentResult");
-  };
+
   return (
     <LinearGradient
       colors={["#FDCEDF", "#BEADFA"]}
@@ -117,11 +85,7 @@ export default function CalculateSpending() {
           ]}
         />
         <View style={styles.splitMoneyButton}>
-          <ButtonHandler
-            title="Splitting the bill"
-            width={250}
-            onPress={splitBillHandler}
-          />
+          <ButtonHandler title="Splitting the bill" width={250} />
         </View>
       </KeyboardAvoidingView>
     </LinearGradient>
@@ -133,6 +97,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
+  buttonContainer: {
+    width: 350,
+    height: 70,
+    justifyContent: "center",
+    alignItems: "flex-end",
+    marginBottom: 30,
+  },
   spendingInfoContainer: {
     flexGrow: 1,
     marginTop: 20,
@@ -142,30 +113,23 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     marginLeft: 50,
   },
+  touch: {
+    borderRadius: 10,
+    overflow: "hidden",
+    width: 360,
+    height: 160,
+  },
+  spendingInfoWrapper: {
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1,
+    marginBottom: 10,
+  },
+  pressed: {
+    backgroundColor: "#BEADFA",
+  },
   nameGroup: {
     marginTop: 20,
     marginLeft: 45,
-  },
-  infoContainer: {
-    marginTop: 5,
-    height: 150,
-    width: 350,
-    borderRadius: 10,
-    backgroundColor: "#EDA2DC",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  name_cost: {
-    margin: 10,
-    display: "flex",
-    flexDirection: "row",
-  },
-  dropdown: {
-    width: 150,
-    height: 45,
-    backgroundColor: "#CF89A5",
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    marginTop: 4,
   },
 });

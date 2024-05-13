@@ -13,6 +13,22 @@ export default function SpendingInfo({
   const [value, setValue] = useState("");
   const [note, setNotes] = useState("");
 
+  useEffect(() => {
+    console.log("members:", members);
+  }, [members]);
+
+  useEffect(() => {
+    console.log("selectedMember:", selectedMember);
+  }, [selectedMember]);
+
+  useEffect(() => {
+    console.log("value:", value);
+  }, [value]);
+
+  useEffect(() => {
+    console.log("note:", note);
+  }, [note]);
+
   const dropdownData = members
     ? members.map((member) => ({
         label: member.member_name,

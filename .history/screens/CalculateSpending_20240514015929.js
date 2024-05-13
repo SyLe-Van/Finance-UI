@@ -9,10 +9,12 @@ import {
   Platform,
 } from "react-native";
 import axios from "axios";
+import { Dropdown } from "react-native-element-dropdown";
 import Input from "../components/Input";
 import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation } from "@react-navigation/native";
+// import SpendingInfo from "../components/SpendingInfo";
 import ButtonHandler from "../components/ButtonHandler";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Display from "../components/Display";
 import { AuthContext } from "./AuthContext";
 
@@ -21,9 +23,17 @@ export default function CalculateSpending() {
   const [pressedIndexes, setPressedIndexes] = useState([]);
   const [nameGroup, setNameGroup] = useState("");
   const [members, setMembers] = useState([]);
-  const { id, groupId } = useContext(AuthContext);
+  const { id, groupId, updateData, setUpdateData } = useContext(AuthContext);
   const flatListRef = useRef(null);
-  const navigation = useNavigation();
+
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  useEffect(() => {
+    if (members.length > 0) {
+      setShowDropdown(true);
+    }
+  }, [members]);
+
   useEffect(() => {
     console.log("spendingItem:", spendingItems);
   }, [spendingItems]);
@@ -57,7 +67,12 @@ export default function CalculateSpending() {
   useEffect(() => {
     console.log("members updated:", members);
   }, [members]);
-
+  const dropdownData = members
+    ? members.map((member) => ({
+        label: member.member_name,
+        value: member._id,
+      }))
+    : [];
   const renderSpendingInfo = ({ item, index }) => (
     <TouchableHighlight
       underlayColor="#BEADFA"
@@ -66,34 +81,34 @@ export default function CalculateSpending() {
       <View style={styles.spendingInfoWrapper}>
         <View style={styles.infoContainer}>
           <View style={styles.name_cost}>
-            <Input
-              title="Name: "
-              width={150}
-              value={item.selectedMember}
-              editable={false}
+            <Dropdown
+              style={styles.dropdown}
+              data={dropdownData}
+              labelField="label"
+              valueField="value"
+              placeholder="Select Member"
+              isVisible={showDropdown}
             />
             <Input
               title="Cost"
+              placeholder="10.90 $"
               width={150}
-              value={item.value}
-              editable={false}
+              value={item.value.toString()}
             />
           </View>
           <View style={styles.note}>
             <Input
               title="Notes"
+              placeholder="A banana"
               width={315}
-              value={item.note.toString()}
-              editable={false}
+              value={item.note}
             />
           </View>
         </View>
       </View>
     </TouchableHighlight>
   );
-  const splitBillHandler = () => {
-    navigation.navigate("PaymentResult");
-  };
+
   return (
     <LinearGradient
       colors={["#FDCEDF", "#BEADFA"]}
@@ -117,11 +132,7 @@ export default function CalculateSpending() {
           ]}
         />
         <View style={styles.splitMoneyButton}>
-          <ButtonHandler
-            title="Splitting the bill"
-            width={250}
-            onPress={splitBillHandler}
-          />
+          <ButtonHandler title="Splitting the bill" width={250} />
         </View>
       </KeyboardAvoidingView>
     </LinearGradient>

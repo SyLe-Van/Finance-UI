@@ -172,9 +172,8 @@ export default function GroupSpending() {
         payments: spendingInfoList,
       })
       .then((response) => {
-        setUpdateData(!updateData);
         console.log("Payments added successfully");
-        navigation.navigate("CalculateSpending");
+        navigation.navigate();
       })
       .catch((error) => {
         console.error("Failed to add payments:", error);

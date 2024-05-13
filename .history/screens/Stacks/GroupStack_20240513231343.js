@@ -73,7 +73,7 @@ const GroupsStack = () => {
         name="CalculateSpending"
         component={CalculateSpending}
         options={{
-          headerTitle: "Calculate Spending",
+          headerTitle: "Payment Result",
           headerTitleStyle: {
             fontSize: 18,
             fontWeight: "bold",

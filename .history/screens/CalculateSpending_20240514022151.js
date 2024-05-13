@@ -9,10 +9,12 @@ import {
   Platform,
 } from "react-native";
 import axios from "axios";
+import { Dropdown } from "react-native-element-dropdown";
 import Input from "../components/Input";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import ButtonHandler from "../components/ButtonHandler";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Display from "../components/Display";
 import { AuthContext } from "./AuthContext";
 
@@ -66,26 +68,11 @@ export default function CalculateSpending() {
       <View style={styles.spendingInfoWrapper}>
         <View style={styles.infoContainer}>
           <View style={styles.name_cost}>
-            <Input
-              title="Name: "
-              width={150}
-              value={item.selectedMember}
-              editable={false}
-            />
-            <Input
-              title="Cost"
-              width={150}
-              value={item.value}
-              editable={false}
-            />
+            <Input title="Name: " width={150} value={item.selectedMember} />
+            <Input title="Cost" width={150} value={item.value} />
           </View>
           <View style={styles.note}>
-            <Input
-              title="Notes"
-              width={315}
-              value={item.note.toString()}
-              editable={false}
-            />
+            <Input title="Notes" width={315} value={item.note.toString()} />
           </View>
         </View>
       </View>

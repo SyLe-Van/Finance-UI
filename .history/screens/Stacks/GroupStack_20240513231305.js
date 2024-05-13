@@ -71,9 +71,9 @@ const GroupsStack = () => {
       />
       <Stack.Screen
         name="CalculateSpending"
-        component={CalculateSpending}
+        component={PaymentResult}
         options={{
-          headerTitle: "Calculate Spending",
+          headerTitle: "Payment Result",
           headerTitleStyle: {
             fontSize: 18,
             fontWeight: "bold",

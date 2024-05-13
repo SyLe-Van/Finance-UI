@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#EDA2DC",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "green",
   },
   name_cost: {
     margin: 10,

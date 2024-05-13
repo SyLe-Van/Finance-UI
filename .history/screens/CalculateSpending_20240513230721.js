@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useContext,
-  useCallback,
-} from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -21,7 +15,8 @@ import ButtonHandler from "../components/ButtonHandler";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Display from "../components/Display";
 import { AuthContext } from "./AuthContext";
-export default function GroupSpending() {
+
+export default function CalculateSpending() {
   const [spendingList, setSpendingList] = useState([]);
   const [numSpending, setNumSpending] = useState(2);
   const [spendingItems, setSpendingItems] = useState([
@@ -174,7 +169,6 @@ export default function GroupSpending() {
       .then((response) => {
         setUpdateData(!updateData);
         console.log("Payments added successfully");
-        navigation.navigate("CalculateSpending");
       })
       .catch((error) => {
         console.error("Failed to add payments:", error);

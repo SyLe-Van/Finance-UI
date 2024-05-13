@@ -1,7 +1,7 @@
 import Input from "../components/Input";
 import { View, Text, StyleSheet } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function SpendingInfo({
   members,
@@ -12,7 +12,7 @@ export default function SpendingInfo({
   const [selectedMember, setSelectedMember] = useState(null);
   const [value, setValue] = useState("");
   const [note, setNotes] = useState("");
-
+  console.log("members:", members);
   const dropdownData = members
     ? members.map((member) => ({
         label: member.member_name,

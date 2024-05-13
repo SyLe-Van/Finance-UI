@@ -56,7 +56,7 @@ const GroupsStack = () => {
         }}
       />
       <Stack.Screen
-        name="PaymentResult"
+        name="CalculateSpending"
         component={PaymentResult}
         options={{
           headerTitle: "Payment Result",
@@ -69,20 +69,7 @@ const GroupsStack = () => {
           },
         }}
       />
-      <Stack.Screen
-        name="CalculateSpending"
-        component={CalculateSpending}
-        options={{
-          headerTitle: "Calculate Spending",
-          headerTitleStyle: {
-            fontSize: 18,
-            fontWeight: "bold",
-          },
-          headerStyle: {
-            backgroundColor: "#FDCEDF",
-          },
-        }}
-      />
+
     </Stack.Navigator>
   );
 };

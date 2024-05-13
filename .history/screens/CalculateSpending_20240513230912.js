@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useContext,
-  useCallback,
-} from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import {
   View,
   StyleSheet,
@@ -21,9 +15,8 @@ import ButtonHandler from "../components/ButtonHandler";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Display from "../components/Display";
 import { AuthContext } from "./AuthContext";
-export default function GroupSpending() {
-  const [spendingList, setSpendingList] = useState([]);
-  const [numSpending, setNumSpending] = useState(2);
+
+export default function CalculateSpending() {
   const [spendingItems, setSpendingItems] = useState([
     { id: 0, name: "Spending 1" },
     { id: 1, name: "Spending 2" },
@@ -36,87 +29,23 @@ export default function GroupSpending() {
   const { id, groupId, updateData, setUpdateData } = useContext(AuthContext);
   ////////////////////////////////////////////////////////////////
 
-  const [nameGroup, setNameGroup] = useState("");
-  const [members, setMembers] = useState([]);
-
-  const handlePressIn = (index) => {
-    setPressedIndexes((prevIndexes) => [...prevIndexes, index]);
-  };
-
-  const handlePressOut = (index) => {
-    setPressedIndexes((prevIndexes) =>
-      prevIndexes.filter((pressedIndex) => pressedIndex !== index)
-    );
-  };
-
-  const handleDeleteItem = (index) => {
-    if (spendingItems.length <= 2) {
-      return;
-    }
-    if (index < spendingItems.length) {
-      setSpendingItems((prevSpendingItems) =>
-        prevSpendingItems.filter((_, i) => i !== index)
-      );
-    }
-  };
-  const handleLongPress = (index) => {
-    if (pressedIndexes.includes(index)) {
-      const buttons = [
-        {
-          text: "Delete",
-          onPress: () => {
-            handleDeleteItem(index);
-          },
-          style: "destructive",
-        },
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel",
-        },
-      ];
-
-      Alert.alert("Options", "Choose an action", buttons, { cancelable: true });
-    }
-  };
-
-  useEffect(() => {
-    console.log("members updated:", members);
-  }, [members]);
-
-  useEffect(() => {
-    if (id && groupId) {
-      axios
-        .get(
-          `https://finance-api-kgh1.onrender.com/api/getOneGroupID/${id}/${groupId}`
-        )
-        .then((response) => {
-          const data = response.data;
-          setNameGroup(data.name_group);
-          const Members = data.member;
-          setMembers(Members);
-        })
-        .catch((error) => {
-          console.error("Error fetching group information:", error);
-        });
-    }
-  }, [id, groupId]);
-
-  const addNewSpendingItem = () => {
-    const newItem = {
-      id: nextId,
-      selectedMember: null,
-      value: "",
-      note: "",
-      name: `Spending ${nextId + 1}`,
-    };
-    setSpendingItems((prevItems) => [...prevItems, newItem]);
-    setNextId((prevId) => prevId + 1);
-  };
-
-  const scrollToNewestItem = () => {
-    flatListRef.current.scrollToEnd({ animated: true });
-  };
+  //   useEffect(() => {
+  //     if (id && groupId) {
+  //       axios
+  //         .get(
+  //           `https://finance-api-kgh1.onrender.com/api/getOneGroupID/${id}/${groupId}`
+  //         )
+  //         .then((response) => {
+  //           const data = response.data;
+  //           setNameGroup(data.name_group);
+  //           const Members = data.member;
+  //           setMembers(Members);
+  //         })
+  //         .catch((error) => {
+  //           console.error("Error fetching group information:", error);
+  //         });
+  //     }
+  //   }, [id, groupId]);
 
   const renderSpendingInfo = ({ item, index }) => (
     <TouchableHighlight
@@ -153,33 +82,32 @@ export default function GroupSpending() {
     </TouchableHighlight>
   );
 
-  const saveSpendingInfo = () => {
-    const spendingInfoList = spendingItems.map((item) => {
-      const member = members.find(
-        (member) => member._id === item.selectedMember
-      );
+  //   const saveSpendingInfo = () => {
+  //     const spendingInfoList = spendingItems.map((item) => {
+  //       const member = members.find(
+  //         (member) => member._id === item.selectedMember
+  //       );
 
-      return {
-        member_id: item.selectedMember,
-        member_name: member ? member.member_name : "Unknown",
-        value: item.value,
-        note: item.note,
-      };
-    });
-    console.log("Spending Info List:", spendingInfoList);
-    axios
-      .put(`https://finance-api-kgh1.onrender.com/api/addPayList/${groupId}`, {
-        payments: spendingInfoList,
-      })
-      .then((response) => {
-        setUpdateData(!updateData);
-        console.log("Payments added successfully");
-        navigation.navigate("CalculateSpending");
-      })
-      .catch((error) => {
-        console.error("Failed to add payments:", error);
-      });
-  };
+  //       return {
+  //         member_id: item.selectedMember,
+  //         member_name: member ? member.member_name : "Unknown",
+  //         value: item.value,
+  //         note: item.note,
+  //       };
+  //     });
+  //     console.log("Spending Info List:", spendingInfoList);
+  //     axios
+  //       .put(`https://finance-api-kgh1.onrender.com/api/addPayList/${groupId}`, {
+  //         payments: spendingInfoList,
+  //       })
+  //       .then((response) => {
+  //         setUpdateData(!updateData);
+  //         console.log("Payments added successfully");
+  //       })
+  //       .catch((error) => {
+  //         console.error("Failed to add payments:", error);
+  //       });
+  //   };
 
   return (
     <LinearGradient
@@ -193,7 +121,7 @@ export default function GroupSpending() {
         <View style={styles.nameGroup}>
           <Display title={nameGroup} width={250} />
         </View>
-        <FlatList
+        {/* <FlatList
           ref={flatListRef}
           data={spendingItems}
           renderItem={renderSpendingInfo}
@@ -213,7 +141,7 @@ export default function GroupSpending() {
               scrollToNewestItem();
             }}
           />
-        </View>
+        </View> */}
         <View style={styles.splitMoneyButton}>
           <ButtonHandler title="Save" width={250} onPress={saveSpendingInfo} />
         </View>
