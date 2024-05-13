@@ -172,6 +172,7 @@ export default function GroupSpending() {
         payments: spendingInfoList,
       })
       .then((response) => {
+        setUpdateData(!updateData);
         console.log("Payments added successfully");
       })
       .catch((error) => {

@@ -33,7 +33,7 @@ export default function GroupSpending() {
   const flatListRef = useRef(null);
   const route = useRoute();
   const navigation = useNavigation();
-  const { id, groupId, updateData, setUpdateData } = useContext(AuthContext);
+  const { id, groupId } = useContext(AuthContext);
   ////////////////////////////////////////////////////////////////
 
   const [nameGroup, setNameGroup] = useState("");

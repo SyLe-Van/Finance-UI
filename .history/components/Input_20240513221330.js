@@ -16,7 +16,6 @@ export default function Input({
   style,
   onChangeText,
   note,
-  cost,
 }) {
   return (
     <View style={[styles.wrapper, { width: width }]}>

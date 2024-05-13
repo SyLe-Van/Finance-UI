@@ -172,6 +172,7 @@ export default function GroupSpending() {
         payments: spendingInfoList,
       })
       .then((response) => {
+        setUpdateData(!updateData);
         console.log("Payments added successfully");
       })
       .catch((error) => {
@@ -202,16 +203,6 @@ export default function GroupSpending() {
           ]}
           onContentSizeChange={() => scrollToNewestItem()}
         />
-        <View style={styles.buttonContainer}>
-          <ButtonHandler
-            title="+"
-            width={80}
-            onPress={() => {
-              addNewSpendingItem();
-              scrollToNewestItem();
-            }}
-          />
-        </View>
         <View style={styles.splitMoneyButton}>
           <ButtonHandler title="Save" width={250} onPress={saveSpendingInfo} />
         </View>

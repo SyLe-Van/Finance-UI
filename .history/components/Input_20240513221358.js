@@ -12,11 +12,11 @@ export default function Input({
   placeholder,
   onDelete,
   width,
+
   value,
   style,
   onChangeText,
   note,
-  cost,
 }) {
   return (
     <View style={[styles.wrapper, { width: width }]}>
@@ -27,7 +27,7 @@ export default function Input({
           value={value}
           onChangeText={onChangeText}
           note={note}
-          cost={cost}
+          value={value}
           style={[styles.TextInputContainer, { width: 150 }]}
         />
       </TouchableOpacity>

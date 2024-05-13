@@ -33,7 +33,7 @@ export default function GroupSpending() {
   const flatListRef = useRef(null);
   const route = useRoute();
   const navigation = useNavigation();
-  const { id, groupId, updateData, setUpdateData } = useContext(AuthContext);
+  const { id, groupId } = useContext(AuthContext);
   ////////////////////////////////////////////////////////////////
 
   const [nameGroup, setNameGroup] = useState("");
@@ -167,16 +167,6 @@ export default function GroupSpending() {
       };
     });
     console.log("Spending Info List:", spendingInfoList);
-    axios
-      .put(`https://finance-api-kgh1.onrender.com/api/addPayList/${groupId}`, {
-        payments: spendingInfoList,
-      })
-      .then((response) => {
-        console.log("Payments added successfully");
-      })
-      .catch((error) => {
-        console.error("Failed to add payments:", error);
-      });
   };
 
   return (

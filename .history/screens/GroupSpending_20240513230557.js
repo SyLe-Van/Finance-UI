@@ -102,18 +102,6 @@ export default function GroupSpending() {
     }
   }, [id, groupId]);
 
-  const addNewSpendingItem = () => {
-    const newItem = {
-      id: nextId,
-      selectedMember: null,
-      value: "",
-      note: "",
-      name: `Spending ${nextId + 1}`,
-    };
-    setSpendingItems((prevItems) => [...prevItems, newItem]);
-    setNextId((prevId) => prevId + 1);
-  };
-
   const scrollToNewestItem = () => {
     flatListRef.current.scrollToEnd({ animated: true });
   };
@@ -153,31 +141,7 @@ export default function GroupSpending() {
     </TouchableHighlight>
   );
 
-  const saveSpendingInfo = () => {
-    const spendingInfoList = spendingItems.map((item) => {
-      const member = members.find(
-        (member) => member._id === item.selectedMember
-      );
-
-      return {
-        member_id: item.selectedMember,
-        member_name: member ? member.member_name : "Unknown",
-        value: item.value,
-        note: item.note,
-      };
-    });
-    console.log("Spending Info List:", spendingInfoList);
-    axios
-      .put(`https://finance-api-kgh1.onrender.com/api/addPayList/${groupId}`, {
-        payments: spendingInfoList,
-      })
-      .then((response) => {
-        console.log("Payments added successfully");
-      })
-      .catch((error) => {
-        console.error("Failed to add payments:", error);
-      });
-  };
+  const saveSpendingInfo = () => {};
 
   return (
     <LinearGradient
@@ -202,18 +166,8 @@ export default function GroupSpending() {
           ]}
           onContentSizeChange={() => scrollToNewestItem()}
         />
-        <View style={styles.buttonContainer}>
-          <ButtonHandler
-            title="+"
-            width={80}
-            onPress={() => {
-              addNewSpendingItem();
-              scrollToNewestItem();
-            }}
-          />
-        </View>
         <View style={styles.splitMoneyButton}>
-          <ButtonHandler title="Save" width={250} onPress={saveSpendingInfo} />
+          <ButtonHandler title="Save" width={250} />
         </View>
       </KeyboardAvoidingView>
     </LinearGradient>

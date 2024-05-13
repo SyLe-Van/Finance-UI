@@ -33,7 +33,7 @@ export default function GroupSpending() {
   const flatListRef = useRef(null);
   const route = useRoute();
   const navigation = useNavigation();
-  const { id, groupId, updateData, setUpdateData } = useContext(AuthContext);
+  const { id, groupId } = useContext(AuthContext);
   ////////////////////////////////////////////////////////////////
 
   const [nameGroup, setNameGroup] = useState("");
@@ -158,27 +158,46 @@ export default function GroupSpending() {
       const member = members.find(
         (member) => member._id === item.selectedMember
       );
-
       return {
         member_id: item.selectedMember,
         member_name: member ? member.member_name : "Unknown",
         value: item.value,
-        note: item.note,
+        notes: item.notes,
       };
     });
     console.log("Spending Info List:", spendingInfoList);
-    axios
-      .put(`https://finance-api-kgh1.onrender.com/api/addPayList/${groupId}`, {
-        payments: spendingInfoList,
-      })
-      .then((response) => {
-        console.log("Payments added successfully");
-      })
-      .catch((error) => {
-        console.error("Failed to add payments:", error);
-      });
   };
 
+  // const savePayListHandler = (memberId, value, note) => {
+  //   if (cost === "" && notes === "") {
+  //     Alert.alert("Error", "Please enter a data");
+  //     return;
+  //   } else {
+
+  //     // const objectPayList = {
+  //     //   groupId: groupId,
+  //     //   memberIds: memberIds,
+  //     //   memberName: members,
+  //     //   // cost: costInputs,
+  //     //   // notes: notesInputs,
+  //     // };
+  //     // console.log("objectPayList", objectPayList);
+  //     // axios
+  //     //   .put(
+  //     //     `https://finance-api-kgh1.onrender.com/api/addPayList`,
+  //     //     objectPayList,
+  //     //     {
+  //     //       headers: {
+  //     //         "Content-Type": "application/json",
+  //     //       },
+  //     //     }
+  //     //   )
+  //     //   .then((response) => {
+  //     //     console.log("Added payload");
+  //     //   })
+  //     //   .catch((error) => console.log(error));
+  //   }
+  // };
   return (
     <LinearGradient
       colors={["#FDCEDF", "#BEADFA"]}
