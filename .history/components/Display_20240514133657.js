@@ -12,7 +12,7 @@ export default function Display({ title, width, value }) {
   return (
     <View style={[styles.wrapper, { width: width }]}>
       <Text style={styles.text}>{title}</Text>
-      <Text style={styles.text}>{value}</Text>
+      <Text style={styles.value}>{value}</Text>
     </View>
   );
 }

@@ -28,6 +28,7 @@ export default function Input({
           value={value}
           onChangeText={onChangeText}
           note={note}
+          // cost={cost}
           style={[styles.TextInputContainer, { width: 150 }]}
           editable={editable}
         />

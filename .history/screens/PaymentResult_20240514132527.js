@@ -4,10 +4,8 @@ import Display from "../components/Display";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "./AuthContext";
+import Input from "../components/Input";
 export default function Result() {
-  const [totalSpending, setTotalSpending] = useState("");
-  const [payments, setPayments] = useState([]);
-  const [averageSpending, setAverageSpending] = useState("");
   const { groupId } = useContext(AuthContext);
   useEffect(() => {
     axios
@@ -20,13 +18,8 @@ export default function Result() {
         }
       )
       .then((response) => {
-        const data = response.data.recommendations;
+        const data = response.data;
         console.log("Data: ", data);
-        setPayments(data);
-        const totalSpending = response.data.total_payment;
-        setTotalSpending(totalSpending);
-        const average = response.data.average;
-        setAverageSpending(average);
       });
   }, []);
   return (
@@ -35,12 +28,7 @@ export default function Result() {
       style={styles.rootContainer}
     >
       <View style={styles.totalSpedingDisplay}>
-        <Display
-          title="Total Spending: "
-          value={`${totalSpending} VND`}
-          width={300}
-        />
-        <Display title="Avarage Spending:" value={`${averageSpending} VND`} />
+        <Input title="Total spending" />
       </View>
       <View style={styles.container}>
         <View style={styles.titleContainer}>
@@ -48,13 +36,11 @@ export default function Result() {
           <Text style={styles.text}>Money</Text>
           <Text style={styles.text}>Receiver</Text>
         </View>
-        {payments.map((payment, index) => (
-          <View style={styles.info} key={index}>
-            <Display title={payment.pay_people} width={95} />
-            <Display title={`${payment.money_pay}`} width={95} />
-            <Display title={payment.receive_people} width={95} />
-          </View>
-        ))}
+        <View style={styles.info}>
+          <Display title="Quang" width={95} />
+          <Display title="29.9$" width={95} />
+          <Display title="Thuong" width={95} />
+        </View>
       </View>
     </LinearGradient>
   );
@@ -87,7 +73,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginTop: 20,
-    marginLeft: 15,
   },
   info: {
     display: "flex",
@@ -97,6 +82,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   totalSpedingDisplay: {
-    marginTop: 30,
+    marginTop: 20,
   },
 });

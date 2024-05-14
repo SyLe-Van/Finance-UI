@@ -8,11 +8,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-export default function Display({ title, width, value }) {
+export default function Display({ title, width }) {
   return (
     <View style={[styles.wrapper, { width: width }]}>
       <Text style={styles.text}>{title}</Text>
-      <Text style={styles.text}>{value}</Text>
+      <Text>{value}</Text>
     </View>
   );
 }

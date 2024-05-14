@@ -4,6 +4,7 @@ import Display from "../components/Display";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "./AuthContext";
+import Input from "../components/Input";
 export default function Result() {
   const [totalSpending, setTotalSpending] = useState("");
   const [payments, setPayments] = useState([]);

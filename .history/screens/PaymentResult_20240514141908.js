@@ -4,6 +4,7 @@ import Display from "../components/Display";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "./AuthContext";
+import Input from "../components/Input";
 export default function Result() {
   const [totalSpending, setTotalSpending] = useState("");
   const [payments, setPayments] = useState([]);
@@ -51,7 +52,7 @@ export default function Result() {
         {payments.map((payment, index) => (
           <View style={styles.info} key={index}>
             <Display title={payment.pay_people} width={95} />
-            <Display title={`${payment.money_pay}`} width={95} />
+            <Display title={`${payment.money_pay} VND`} width={95} />
             <Display title={payment.receive_people} width={95} />
           </View>
         ))}

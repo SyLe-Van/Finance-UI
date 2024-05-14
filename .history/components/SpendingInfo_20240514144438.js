@@ -6,11 +6,11 @@ import { useState, useEffect } from "react";
 export default function SpendingInfo({
   members,
   onMemberChange,
-  onValueChange,
+  onCostChange,
   onNoteChange,
 }) {
   const [selectedMember, setSelectedMember] = useState(null);
-  const [value, setValues] = useState("");
+  const [cost, setCosts] = useState("");
   const [note, setNotes] = useState("");
 
   const dropdownData = members
@@ -19,13 +19,7 @@ export default function SpendingInfo({
         value: member._id,
       }))
     : [];
-  useEffect(() => {
-    setValues(value);
-  }, [value]);
 
-  useEffect(() => {
-    setNotes(note);
-  }, [note]);
   return (
     <View style={styles.infoContainer}>
       <View style={styles.name_cost}>
@@ -46,10 +40,10 @@ export default function SpendingInfo({
           placeholder="10.90 $"
           width={150}
           onChangeText={(text) => {
-            setValues(text);
-            if (onValueChange) onValueChange(text);
+            setCosts(text);
+            if (onCostChange) onCostChange(text);
           }}
-          value={value}
+          cost={cost}
         />
       </View>
       <View style={styles.note}>

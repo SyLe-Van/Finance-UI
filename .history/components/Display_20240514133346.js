@@ -4,15 +4,14 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  value,
   TouchableOpacity,
 } from "react-native";
 
-export default function Display({ title, width, value }) {
+export default function Display({ title, width }) {
   return (
     <View style={[styles.wrapper, { width: width }]}>
       <Text style={styles.text}>{title}</Text>
-      <Text style={styles.text}>{value}</Text>
+      <Text style={styles.text}>$</Text>
     </View>
   );
 }
