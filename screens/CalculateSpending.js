@@ -21,22 +21,19 @@ export default function CalculateSpending({ route }) {
   const [pressedIndexes, setPressedIndexes] = useState([]);
   const [nameGroup, setNameGroup] = useState("");
   const [members, setMembers] = useState([]);
-  const { id } = useContext(AuthContext);
+  const { id, updateData, setUpdateData } = useContext(AuthContext);
   const flatListRef = useRef(null);
   const navigation = useNavigation();
   const { groupId } = route.params;
   useEffect(() => {
-    console.log("spendingItem:", spendingItems);
-  }, [spendingItems]);
-  useEffect(() => {
-    if (id && groupId) {
+    if (groupId) {
       axios
         .get(
           `https://finance-api-kgh1.onrender.com/api/getOneGroupID/${id}/${groupId}`
         )
         .then((response) => {
           const data = response.data;
-          console.log(data);
+          // console.log(data);
           setNameGroup(data.name_group);
           const Members = data.member;
           setMembers(Members);
@@ -53,12 +50,7 @@ export default function CalculateSpending({ route }) {
           console.error("Error fetching group information:", error);
         });
     }
-  }, [id, groupId]);
-
-  useEffect(() => {
-    console.log("members updated:", members);
-  }, [members]);
-
+  }, [groupId, updateData]);
   const renderSpendingInfo = ({ item, index }) => (
     <TouchableHighlight
       underlayColor="#BEADFA"
@@ -97,6 +89,17 @@ export default function CalculateSpending({ route }) {
       groupId: groupId,
     });
   };
+
+  // ----------------------------------------------------------------
+
+  const updatePayListHandler = () => {
+    setUpdateData(!updateData);
+    navigation.navigate("UpdatePayList", {
+      groupId: groupId,
+    });
+  };
+
+  // -----------------------------------------------------------------
   return (
     <LinearGradient
       colors={["#FDCEDF", "#BEADFA"]}
@@ -119,10 +122,15 @@ export default function CalculateSpending({ route }) {
             { paddingBottom: 50 },
           ]}
         />
-        <View style={styles.splitMoneyButton}>
+        <View style={styles.buttonHandler}>
+          <ButtonHandler
+            title="Update"
+            width={170}
+            onPress={updatePayListHandler}
+          />
           <ButtonHandler
             title="Splitting the bill"
-            width={250}
+            width={170}
             onPress={splitBillHandler}
           />
         </View>
@@ -132,6 +140,12 @@ export default function CalculateSpending({ route }) {
 }
 
 const styles = StyleSheet.create({
+  buttonHandler: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 60,
+  },
   rootContainer: {
     flex: 1,
     alignItems: "center",
@@ -141,13 +155,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignSelf: "stretch",
   },
-  splitMoneyButton: {
-    marginBottom: 50,
-    marginLeft: 50,
-  },
   nameGroup: {
     marginTop: 20,
-    marginLeft: 45,
+    marginLeft: 30,
   },
   infoContainer: {
     marginTop: 5,

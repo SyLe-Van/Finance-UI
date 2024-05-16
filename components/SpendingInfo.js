@@ -5,51 +5,48 @@ import { useState, useEffect } from "react";
 
 export default function SpendingInfo({
   members,
-  onMemberChange,
+  selectedMember,
+  value,
+  note,
   onValueChange,
   onNoteChange,
+  onMemberChange,
+  item,
 }) {
-  const [selectedMember, setSelectedMember] = useState(null);
-  const [value, setValues] = useState("");
-  const [note, setNotes] = useState("");
-
-  const dropdownData = members
+  const memberDropdownData = members
     ? members.map((member) => ({
         label: member.member_name,
         value: member._id,
       }))
     : [];
-  useEffect(() => {
-    setValues(value);
-  }, [value]);
 
-  useEffect(() => {
-    setNotes(note);
-  }, [note]);
+  useEffect(() => {}, [value, note]);
   return (
     <View style={styles.infoContainer}>
       <View style={styles.name_cost}>
         <Dropdown
           style={styles.dropdown}
-          data={dropdownData}
+          data={memberDropdownData}
           labelField="label"
           valueField="value"
-          placeholder="Select Member"
+          placeholder={selectedMember ? selectedMember : "Select Member"}
           value={selectedMember}
           onChange={(item) => {
-            setSelectedMember(item.value);
-            if (onMemberChange) onMemberChange(item.value);
+            if (item && onMemberChange) {
+              onMemberChange(item.value);
+            }
           }}
         />
         <Input
           title="Cost"
-          placeholder="10.90 $"
+          placeholder="$"
           width={150}
           onChangeText={(text) => {
-            setValues(text);
-            if (onValueChange) onValueChange(text);
+            if (onValueChange) {
+              onValueChange(text ? text.toString() : "");
+            }
           }}
-          value={value}
+          value={value ? value.toString() : value}
           keyboardType="numeric"
         />
       </View>
@@ -59,10 +56,11 @@ export default function SpendingInfo({
           placeholder="A banana"
           width={315}
           onChangeText={(text) => {
-            setNotes(text);
-            if (onNoteChange) onNoteChange(text);
+            if (onNoteChange) {
+              onNoteChange(text.toString());
+            }
           }}
-          note={note}
+          value={note}
         />
       </View>
     </View>

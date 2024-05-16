@@ -19,7 +19,7 @@ import Input from "../components/Input";
 import ButtonHandler from "../components/ButtonHandler";
 import { useNavigation } from "@react-navigation/native";
 
-export default function CreateGroup() {
+export default function CreateGroup({ route }) {
   const [members, setMembers] = useState(["Member 1", "Member 2", "Member 3"]);
   const [pressedIndexes, setPressedIndexes] = useState([]);
 

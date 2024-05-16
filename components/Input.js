@@ -15,8 +15,6 @@ export default function Input({
   value,
   style,
   onChangeText,
-  note,
-  cost,
   editable,
   keyboardType,
 }) {
@@ -28,7 +26,6 @@ export default function Input({
           placeholder={placeholder}
           value={value}
           onChangeText={onChangeText}
-          note={note}
           style={[styles.TextInputContainer, { width: 150 }]}
           editable={editable}
           keyboardType={keyboardType}

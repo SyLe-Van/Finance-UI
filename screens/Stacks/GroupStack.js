@@ -5,6 +5,7 @@ import CreateGroup from "../CreateGroup";
 import GroupSpending from "../GroupSpending";
 import PaymentResult from "../PaymentResult";
 import CalculateSpending from "../CalculateSpending";
+import UpdatePayList from "../UpdatePayList";
 const Stack = createStackNavigator();
 const GroupsStack = () => {
   return (
@@ -17,7 +18,7 @@ const GroupsStack = () => {
         name="AllGroups"
         component={AllGroups}
         options={{
-          headerTitle: "GROUPS",
+          headerTitle: "Groups",
           headerTitleStyle: {
             fontSize: 18,
             fontWeight: "bold",
@@ -31,7 +32,7 @@ const GroupsStack = () => {
         name="CreateGroup"
         component={CreateGroup}
         options={{
-          headerTitle: "NEWS GROUP",
+          headerTitle: "News Group",
           headerTitleStyle: {
             fontSize: 18,
             fontWeight: "bold",
@@ -45,7 +46,7 @@ const GroupsStack = () => {
         name="GroupSpending"
         component={GroupSpending}
         options={{
-          headerTitle: "GROUP SPENDING",
+          headerTitle: "Group Spending",
           headerTitleStyle: {
             fontSize: 18,
             fontWeight: "bold",
@@ -74,6 +75,20 @@ const GroupsStack = () => {
         component={CalculateSpending}
         options={{
           headerTitle: "Calculate Spending",
+          headerTitleStyle: {
+            fontSize: 18,
+            fontWeight: "bold",
+          },
+          headerStyle: {
+            backgroundColor: "#FDCEDF",
+          },
+        }}
+      />
+      <Stack.Screen
+        name="UpdatePayList"
+        component={UpdatePayList}
+        options={{
+          headerTitle: "Group Spending",
           headerTitleStyle: {
             fontSize: 18,
             fontWeight: "bold",
