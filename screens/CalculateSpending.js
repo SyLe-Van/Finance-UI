@@ -43,7 +43,7 @@ export default function CalculateSpending({ route }) {
             value: item.value,
             note: item.note.toString(),
           }));
-          console.log("PAY_LIST", payList);
+          // console.log("PAY_LIST", payList);
           setSpendingItems(payList);
         })
         .catch((error) => {
@@ -145,6 +145,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 60,
+    marginTop: 20,
   },
   rootContainer: {
     flex: 1,

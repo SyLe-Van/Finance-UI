@@ -88,7 +88,8 @@ export default function UpdatePayList({ route }) {
 
     Alert.alert("Options", "Choose an action", buttons, { cancelable: true });
   };
-
+  //   ----------------------------------------------------------------
+  // get spending list from server
   useEffect(() => {
     if (id && groupId) {
       axios
@@ -97,17 +98,18 @@ export default function UpdatePayList({ route }) {
         )
         .then((response) => {
           const data = response.data;
-          //   console.log("DATA", data);
+          // console.log("DATA", data);
           setNameGroup(data.name_group);
           const Members = data.member;
+          // console.log("members", Members);
           setMembers(Members);
           const payList = data.pay_list.map((item, index) => ({
             id: item._id,
-            selectedMember: item.member_name,
+            selectedMember: item.member_id,
             value: item.value,
             note: item.note.toString(),
           }));
-          console.log("PAY_LIST", payList);
+          //   console.log("PAY_LIST", payList);
           setSpendingItems(payList);
         })
         .catch((error) => {
@@ -115,7 +117,13 @@ export default function UpdatePayList({ route }) {
         });
     }
   }, [id, groupId]);
-
+  useEffect(() => {
+    spendingItems.forEach((item) => {
+      console.log("Selected Item: ", item.selectedMember);
+    });
+  }, [spendingItems]);
+  // ----------------------------------------------------------------
+  //Create new spending Items and push into state
   const addNewSpendingItem = () => {
     const randomMember = members[Math.floor(Math.random() * members.length)];
     const newId = Date.now().toString();
@@ -124,18 +132,18 @@ export default function UpdatePayList({ route }) {
       member_id: randomMember._id,
       member_name: randomMember.member_name,
       value: "",
-      note: "...",
+      note: "",
     };
-    console.log("New Spending Item", newItem);
+    // console.log("New Spending Item", newItem);
     axios
       .put(`https://finance-api-kgh1.onrender.com/api/addPayList/${groupId}`, {
         payments: [newItem],
       })
       .then((response) => {
         const responseData = response.data;
-        console.log("Data from API:", responseData);
+        // console.log("Data from API:", responseData);
         const newSpendingItem = responseData.payments;
-        console.log("New Spending Item from API:", newSpendingItem);
+        // console.log("New Spending Item from API:", newSpendingItem);
 
         // Thêm mục mới vào state spendingItems sau khi nhận được dữ liệu từ API
         const configNewSpendingItems = {
@@ -144,19 +152,24 @@ export default function UpdatePayList({ route }) {
           value: newSpendingItem.value,
           note: newSpendingItem.note,
         };
-        console.log("New ID:", configNewSpendingItems.id);
+        // console.log("New ID:", configNewSpendingItems.id);
         setSpendingItems((prevItems) => [...prevItems, configNewSpendingItems]);
         setNextId((prevId) => prevId + 1);
-        console.log("New spending list:");
-        console.log([...spendingItems, newSpendingItem]);
+        // console.log("New spending list:");
+        // console.log([...spendingItems, newSpendingItem]);
       })
       .catch((error) => {
         console.error("Failed to add new spending item:", error);
       });
   };
-
   const scrollToNewestItem = () => {
     flatListRef.current.scrollToEnd({ animated: true });
+  };
+  //----------------------------------------------------------------
+  const handleMemberChange = (index, selectedMember) => {
+    const updatedItems = [...spendingItems];
+    updatedItems[index].selectedMember = selectedMember;
+    setSpendingItems(updatedItems); // This triggers a re-render
   };
 
   const renderSpendingInfo = ({ item, index }) => (
@@ -184,16 +197,15 @@ export default function UpdatePayList({ route }) {
             updatedItems[index].note = text;
             setSpendingItems(updatedItems);
           }}
-          onMemberChange={(selectedMember) => {
-            const updatedItems = [...spendingItems];
-            updatedItems[index].selectedMember = selectedMember;
-            setSpendingItems(updatedItems);
-          }}
+          onMemberChange={(selectedMember) =>
+            handleMemberChange(index, selectedMember)
+          }
         />
       </View>
     </TouchableHighlight>
   );
-
+  // ----------------------------------------------------------------
+  //Update spending list
   const saveSpendingInfo = () => {
     const spendingInfoList = spendingItems.map((item) => {
       const member = members.find(
@@ -228,6 +240,7 @@ export default function UpdatePayList({ route }) {
         console.error("Failed to update spending list:", error);
       });
   };
+  // ----------------------------------------------------------------
   return (
     <LinearGradient
       colors={["#FDCEDF", "#BEADFA"]}

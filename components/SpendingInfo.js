@@ -11,16 +11,29 @@ export default function SpendingInfo({
   onValueChange,
   onNoteChange,
   onMemberChange,
-  item,
 }) {
+  // console.log("members: ", members);
   const memberDropdownData = members
     ? members.map((member) => ({
         label: member.member_name,
         value: member._id,
       }))
     : [];
+  // console.log("Dropdown data:", memberDropdownData);
+  // console.log("Selected member:", selectedMember);
 
   useEffect(() => {}, [value, note]);
+
+  const [prevSelectedMember, setPrevSelectedMember] = useState(null);
+
+  useEffect(() => {
+    if (prevSelectedMember !== selectedMember) {
+      setPrevSelectedMember(selectedMember);
+    }
+  }, [selectedMember]);
+  // const selectedMemberId = members.find(
+  //   (member) => member.member_name === selectedMember
+  // )?._id;
   return (
     <View style={styles.infoContainer}>
       <View style={styles.name_cost}>
@@ -29,7 +42,7 @@ export default function SpendingInfo({
           data={memberDropdownData}
           labelField="label"
           valueField="value"
-          placeholder={selectedMember ? selectedMember : "Select Member"}
+          placeholder="Select member"
           value={selectedMember}
           onChange={(item) => {
             if (item && onMemberChange) {

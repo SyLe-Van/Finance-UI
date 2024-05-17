@@ -87,7 +87,7 @@ export default function CreateGroup({ route }) {
       <Input
         title={`Member ${index + 1}`}
         placeholder={`Enter name ${item}`}
-        width={300}
+        width={350}
         onDelete={() => handleDeleteItem(index)}
         value={memberInputs[index]}
         onChangeText={(text) => {
