@@ -7,14 +7,15 @@ import {
   TouchableHighlight,
   Alert,
   Platform,
+  ImageBackground,
 } from "react-native";
 import axios from "axios";
-import Input from "../components/Input";
+import Input from "../../components/Input";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
-import ButtonHandler from "../components/ButtonHandler";
-import Display from "../components/Display";
-import { AuthContext } from "./AuthContext";
+import ButtonHandler from "../../components/ButtonHandler";
+import Display from "../../components/Display";
+import { AuthContext } from "../AuthContext";
 
 export default function CalculateSpending({ route }) {
   const [spendingItems, setSpendingItems] = useState([]);
@@ -56,32 +57,38 @@ export default function CalculateSpending({ route }) {
       underlayColor="#BEADFA"
       style={[styles.touch, pressedIndexes.includes(index) && styles.pressed]}
     >
-      <View style={styles.spendingInfoWrapper}>
-        <View style={styles.infoContainer}>
-          <View style={styles.name_cost}>
-            <Input
-              title="Name: "
-              width={150}
-              value={item.selectedMember}
-              editable={false}
-            />
-            <Input
-              title="Cost"
-              width={150}
-              value={item.value.toString()}
-              editable={false}
-            />
-          </View>
-          <View style={styles.note}>
-            <Input
-              title="Notes"
-              width={315}
-              value={item.note.toString()}
-              editable={false}
-            />
+      <ImageBackground
+        source={require("../../assets/backgroud-component.png")}
+        style={styles.infoContainer}
+        imageStyle={{ borderRadius: 10 }}
+      >
+        <View style={styles.spendingInfoWrapper}>
+          <View style={styles.infoContainer}>
+            <View style={styles.name_cost}>
+              <Input
+                title="Name: "
+                width={150}
+                value={item.selectedMember}
+                editable={false}
+              />
+              <Input
+                title="Cost"
+                width={150}
+                value={item.value.toString()}
+                editable={false}
+              />
+            </View>
+            <View style={styles.note}>
+              <Input
+                title="Notes"
+                width={315}
+                value={item.note.toString()}
+                editable={false}
+              />
+            </View>
           </View>
         </View>
-      </View>
+      </ImageBackground>
     </TouchableHighlight>
   );
   const splitBillHandler = () => {
@@ -110,7 +117,7 @@ export default function CalculateSpending({ route }) {
         style={{ flex: 1 }}
       >
         <View style={styles.nameGroup}>
-          <Display title={nameGroup} width={250} />
+          <Display title={nameGroup} width={350} />
         </View>
         <FlatList
           ref={flatListRef}
@@ -119,7 +126,10 @@ export default function CalculateSpending({ route }) {
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={[
             styles.spendingInfoContainer,
-            { paddingBottom: 50 },
+            {
+              paddingBottom: 50,
+              alignItems: "center",
+            },
           ]}
         />
         <View style={styles.buttonHandler}>
@@ -141,15 +151,18 @@ export default function CalculateSpending({ route }) {
 
 const styles = StyleSheet.create({
   buttonHandler: {
+    width: 350,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 60,
-    marginTop: 20,
+    marginBottom: 80,
+    marginLeft: 18,
+    marginTop: 10,
   },
   rootContainer: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
   },
   spendingInfoContainer: {
     flexGrow: 1,
@@ -158,19 +171,16 @@ const styles = StyleSheet.create({
   },
   nameGroup: {
     marginTop: 20,
-    marginLeft: 30,
   },
   infoContainer: {
     marginTop: 5,
     height: 150,
     width: 350,
     borderRadius: 10,
-    backgroundColor: "#EDA2DC",
     justifyContent: "center",
     alignItems: "center",
   },
   name_cost: {
-    margin: 10,
     display: "flex",
     flexDirection: "row",
   },

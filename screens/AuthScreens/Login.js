@@ -10,12 +10,15 @@ import {
   Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../AuthContext";
 import * as Animatable from "react-native-animatable";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { FontAwesome } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "react-native-paper";
-import Feather from "react-native-vector-icons/Feather";
+import * as Font from "expo-font";
+
+import { Feather } from "@expo/vector-icons";
+
 import axios from "axios";
 import { set } from "date-fns";
 const Login = () => {

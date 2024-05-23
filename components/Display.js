@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     margin: 7,
-    backgroundColor: "#CF89A5",
+    backgroundColor: "#ffffff",
     borderRadius: 10,
     marginTop: 4,
   },
@@ -115,5 +115,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     marginLeft: 5,
+    color: "purple",
   },
 });

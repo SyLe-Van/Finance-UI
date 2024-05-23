@@ -1,11 +1,11 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import AllGroups from "../AllGroups";
-import CreateGroup from "../CreateGroup";
-import GroupSpending from "../GroupSpending";
-import PaymentResult from "../PaymentResult";
-import CalculateSpending from "../CalculateSpending";
-import UpdatePayList from "../UpdatePayList";
+import AllGroups from "../SpendingGroupScreens/AllGroups";
+import CreateGroup from "../SpendingGroupScreens/CreateGroup";
+import GroupSpending from "../SpendingGroupScreens/GroupSpending";
+import PaymentResult from "../SpendingGroupScreens/PaymentResult";
+import CalculateSpending from "../SpendingGroupScreens/CalculateSpending";
+import UpdatePayList from "../SpendingGroupScreens/UpdatePayList";
 const Stack = createStackNavigator();
 const GroupsStack = () => {
   return (
@@ -88,7 +88,7 @@ const GroupsStack = () => {
         name="UpdatePayList"
         component={UpdatePayList}
         options={{
-          headerTitle: "Group Spending",
+          headerTitle: "Update Spending",
           headerTitleStyle: {
             fontSize: 18,
             fontWeight: "bold",

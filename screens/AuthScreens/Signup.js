@@ -14,7 +14,7 @@ import {
   Alert,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../AuthContext";
 import * as Animatable from "react-native-animatable";
 import { LinearGradient } from "expo-linear-gradient";
 import axios from "axios";

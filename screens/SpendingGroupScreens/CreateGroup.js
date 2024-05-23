@@ -14,9 +14,9 @@ import {
   Alert,
 } from "react-native";
 import axios from "axios";
-import { AuthContext } from "./AuthContext";
-import Input from "../components/Input";
-import ButtonHandler from "../components/ButtonHandler";
+import { AuthContext } from "../AuthContext";
+import Input from "../../components/Input";
+import ButtonHandler from "../../components/ButtonHandler";
 import { useNavigation } from "@react-navigation/native";
 
 export default function CreateGroup({ route }) {

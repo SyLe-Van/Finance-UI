@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import Display from "../components/Display";
+import Display from "../../components/Display";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { AuthContext } from "./AuthContext";
-import ButtonHandler from "../components/ButtonHandler";
+import { AuthContext } from "../AuthContext";
+import ButtonHandler from "../../components/ButtonHandler";
 import { useNavigation } from "@react-navigation/native";
 
 export default function Result({ route }) {
@@ -12,7 +12,7 @@ export default function Result({ route }) {
   const [payments, setPayments] = useState([]);
   const [averageSpending, setAverageSpending] = useState("");
   const navigation = useNavigation();
-  // const { groupId } = useContext(AuthContext);
+  const { updateData, setUpdateData } = useContext(AuthContext);
   const { groupId } = route.params;
   useEffect(() => {
     axios
@@ -33,7 +33,7 @@ export default function Result({ route }) {
         const average = response.data.average;
         setAverageSpending(average);
       });
-  }, []);
+  }, [groupId, updateData]);
   const changeToAllGroups = () => {
     navigation.navigate("AllGroups");
   };
@@ -100,12 +100,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: "#EDA2DC",
     alignSelf: "center",
+    paddingBottom: 20,
   },
   text: {
     fontSize: 18,
     fontWeight: "bold",
     marginTop: 20,
     marginLeft: 15,
+    color: "#ffffff",
   },
   info: {
     display: "flex",

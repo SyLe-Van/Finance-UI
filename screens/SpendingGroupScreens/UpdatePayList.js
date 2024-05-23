@@ -7,14 +7,15 @@ import {
   TouchableHighlight,
   Alert,
   Platform,
+  ImageBackground,
 } from "react-native";
 import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
-import SpendingInfo from "../components/SpendingInfo";
-import ButtonHandler from "../components/ButtonHandler";
+import SpendingInfo from "../../components/SpendingInfo";
+import ButtonHandler from "../../components/ButtonHandler";
 import { useNavigation } from "@react-navigation/native";
-import Display from "../components/Display";
-import { AuthContext } from "./AuthContext";
+import Display from "../../components/Display";
+import { AuthContext } from "../AuthContext";
 
 export default function UpdatePayList({ route }) {
   const [spendingItems, setSpendingItems] = useState([]);
@@ -22,6 +23,7 @@ export default function UpdatePayList({ route }) {
   const [nameGroup, setNameGroup] = useState("");
   const [members, setMembers] = useState([]);
 
+  const [loading, setLoading] = useState(true);
   const [backgroundColor, setBackgroundColor] = useState(null);
   const flatListRef = useRef(null);
   const navigation = useNavigation();
@@ -92,36 +94,40 @@ export default function UpdatePayList({ route }) {
   // get spending list from server
   useEffect(() => {
     if (id && groupId) {
+      setLoading(true);
       axios
         .get(
           `https://finance-api-kgh1.onrender.com/api/getOneGroupID/${id}/${groupId}`
         )
         .then((response) => {
           const data = response.data;
-          // console.log("DATA", data);
+          console.log("Data: ", data);
           setNameGroup(data.name_group);
-          const Members = data.member;
-          // console.log("members", Members);
-          setMembers(Members);
-          const payList = data.pay_list.map((item, index) => ({
-            id: item._id,
-            selectedMember: item.member_id,
-            value: item.value,
-            note: item.note.toString(),
-          }));
-          //   console.log("PAY_LIST", payList);
+          setMembers(data.member);
+          console.log("pay_list: ", data.pay_list);
+          const payList = data.pay_list.map((item, index) => {
+            console.log("item.member_name:", item.member_name);
+            const member = data.member.find(
+              (m) => m.member_name === item.member_name
+            );
+            console.log("found member:", member);
+            return {
+              id: item._id,
+              selectedMember: member ? member._id : null,
+              value: item.value,
+              note: item.note.toString(),
+            };
+          });
+          console.log("PAY_LIST", payList);
           setSpendingItems(payList);
         })
         .catch((error) => {
           console.error("Error fetching group information:", error);
+          setLoading(false);
         });
     }
-  }, [id, groupId]);
-  useEffect(() => {
-    spendingItems.forEach((item) => {
-      console.log("Selected Item: ", item.selectedMember);
-    });
-  }, [spendingItems]);
+  }, [id, groupId, updateData]);
+
   // ----------------------------------------------------------------
   //Create new spending Items and push into state
   const addNewSpendingItem = () => {
@@ -134,29 +140,23 @@ export default function UpdatePayList({ route }) {
       value: "",
       note: "",
     };
-    // console.log("New Spending Item", newItem);
     axios
       .put(`https://finance-api-kgh1.onrender.com/api/addPayList/${groupId}`, {
         payments: [newItem],
       })
       .then((response) => {
         const responseData = response.data;
-        // console.log("Data from API:", responseData);
         const newSpendingItem = responseData.payments;
-        // console.log("New Spending Item from API:", newSpendingItem);
 
-        // Thêm mục mới vào state spendingItems sau khi nhận được dữ liệu từ API
         const configNewSpendingItems = {
           id: newSpendingItem._id,
           selectedMember: newSpendingItem.selectedMember,
           value: newSpendingItem.value,
           note: newSpendingItem.note,
         };
-        // console.log("New ID:", configNewSpendingItems.id);
+
         setSpendingItems((prevItems) => [...prevItems, configNewSpendingItems]);
         setNextId((prevId) => prevId + 1);
-        // console.log("New spending list:");
-        // console.log([...spendingItems, newSpendingItem]);
       })
       .catch((error) => {
         console.error("Failed to add new spending item:", error);
@@ -169,7 +169,7 @@ export default function UpdatePayList({ route }) {
   const handleMemberChange = (index, selectedMember) => {
     const updatedItems = [...spendingItems];
     updatedItems[index].selectedMember = selectedMember;
-    setSpendingItems(updatedItems); // This triggers a re-render
+    setSpendingItems(updatedItems);
   };
 
   const renderSpendingInfo = ({ item, index }) => (
@@ -180,38 +180,51 @@ export default function UpdatePayList({ route }) {
       underlayColor="#BEADFA"
       style={[styles.touch]}
     >
-      <View style={styles.spendingInfoWrapper}>
-        <SpendingInfo
-          key={item.id}
-          members={members}
-          selectedMember={item.selectedMember}
-          value={item.value}
-          note={item.note}
-          onValueChange={(text) => {
-            const updatedItems = [...spendingItems];
-            updatedItems[index].value = text;
-            setSpendingItems(updatedItems);
-          }}
-          onNoteChange={(text) => {
-            const updatedItems = [...spendingItems];
-            updatedItems[index].note = text;
-            setSpendingItems(updatedItems);
-          }}
-          onMemberChange={(selectedMember) =>
-            handleMemberChange(index, selectedMember)
-          }
-        />
-      </View>
+      <ImageBackground
+        source={require("../../assets/backgroud-component.png")}
+        style={styles.spendingInfoWrapper}
+        imageStyle={{ borderRadius: 10 }}
+      >
+        <View style={styles.spendingInfoWrapper}>
+          <SpendingInfo
+            key={item.id}
+            members={members}
+            selectedMember={item.selectedMember}
+            value={item.value}
+            note={item.note}
+            onValueChange={(text) => {
+              const updatedItems = [...spendingItems];
+              updatedItems[index].value = text;
+              setSpendingItems(updatedItems);
+            }}
+            onNoteChange={(text) => {
+              const updatedItems = [...spendingItems];
+              updatedItems[index].note = text;
+              setSpendingItems(updatedItems);
+            }}
+            onMemberChange={(selectedMember) =>
+              handleMemberChange(index, selectedMember)
+            }
+          />
+        </View>
+      </ImageBackground>
     </TouchableHighlight>
   );
   // ----------------------------------------------------------------
   //Update spending list
   const saveSpendingInfo = () => {
+    for (let item of spendingItems) {
+      if (!item.selectedMember || !item.value || !item.note) {
+        alert("Please fill in all fields");
+        return;
+      }
+    }
     const spendingInfoList = spendingItems.map((item) => {
       const member = members.find(
         (member) => member._id === item.selectedMember
       );
-
+      console.log("Memberrrr: ", member);
+      console.log("Item: ", item.selectedMember);
       return {
         paylistId: item.id,
         member_id: item.selectedMember,
@@ -251,7 +264,7 @@ export default function UpdatePayList({ route }) {
         style={{ flex: 1 }}
       >
         <View style={styles.nameGroup}>
-          <Display title={nameGroup} width={250} />
+          <Display title={nameGroup} width={350} />
         </View>
         <FlatList
           ref={flatListRef}
@@ -260,7 +273,10 @@ export default function UpdatePayList({ route }) {
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={[
             styles.spendingInfoContainer,
-            { paddingBottom: 50 },
+            {
+              marginTop: 20,
+              alignItems: "center",
+            },
           ]}
           onContentSizeChange={() => scrollToNewestItem()}
         />
@@ -277,7 +293,7 @@ export default function UpdatePayList({ route }) {
         <View style={styles.splitMoneyButton}>
           <ButtonHandler
             title="Update"
-            width={250}
+            width={350}
             onPress={saveSpendingInfo}
           />
         </View>
@@ -290,22 +306,24 @@ const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
     alignItems: "center",
+    justifyContent: "center",
   },
   buttonContainer: {
     width: 350,
     height: 70,
     justifyContent: "center",
     alignItems: "flex-end",
-    marginBottom: 30,
+    marginBottom: 10,
+    marginLeft: 16,
   },
   spendingInfoContainer: {
     flexGrow: 1,
     marginTop: 20,
-    alignSelf: "stretch",
   },
   splitMoneyButton: {
     marginBottom: 50,
-    marginLeft: 50,
+    justifyContent: "center",
+    alignItems: "center",
   },
   touch: {
     borderRadius: 10,
@@ -318,12 +336,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     marginBottom: 10,
+    marginLeft: 5,
+    width: 350,
   },
   pressed: {
     backgroundColor: "#BEADFA",
   },
   nameGroup: {
     marginTop: 20,
-    marginLeft: 45,
   },
 });

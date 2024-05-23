@@ -9,7 +9,8 @@ import {
   ScrollView,
   Button,
 } from "react-native";
-// import { Icon } from "@react-native-vector-icons/ionicons";
+// import { Ionicons } from "@react-native-vector-icons/ionicons";
+import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { AuthContext } from "./AuthContext";
@@ -88,7 +89,7 @@ const Account = () => {
           style={styles.menuItem}
           onPress={() => changMoneyPressHandler()}
         >
-          <Ionicons name="card-outline" size={25} color="#4390f7" />
+          <Ionicons name="car-outline" size={25} color="#4390f7" />
           <Text style={styles.menuText}> Change money</Text>
         </TouchableOpacity>
 
@@ -123,7 +124,8 @@ const Account = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FCE9F1",
+    backgroundColor: "#FDCEDF",
+    height: 1000,
   },
   images: {
     width: 32,

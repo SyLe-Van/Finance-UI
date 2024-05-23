@@ -1,16 +1,29 @@
 import User from "../User";
 import { createStackNavigator } from "@react-navigation/stack";
-import ChangeMoney from "../ChangeMoney";
+import ChangeMoney from "../AccountScreens/ChangeMoney";
 import Premium from "../Premium";
 import VnPayWebView from "../VnPayWebView";
-import FailedPayment from "../FailedPayment";
-import SucessPayment from "../SucessPayment";
+import FailedPayment from "../PaymentScreens/FailedPayment";
+import SucessPayment from "../PaymentScreens/SucessPayment";
 import GroupStack from "./GroupStack";
 const Stack = createStackNavigator();
 const AccountStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="User" component={User} />
+      <Stack.Screen
+        options={{
+          headerStyle: {
+            backgroundColor: "#FDCEDF",
+          },
+          headerTintColor: "purple",
+          headerTitleStyle: {
+            fontWeight: "bold",
+            fontSize: 20,
+          },
+        }}
+        name="User"
+        component={User}
+      />
       <Stack.Screen name="ChangeMoney" component={ChangeMoney} />
       <Stack.Screen name="Premium" component={Premium} />
       <Stack.Screen name="VnPayWebView" component={VnPayWebView} />

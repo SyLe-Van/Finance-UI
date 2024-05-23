@@ -15,9 +15,9 @@ import { useTheme } from "@react-navigation/native";
 const { width: screenWidth } = Dimensions.get("screen");
 
 const splashImages = [
-  require("../assets/3.png"),
-  require("../assets/2.png"),
-  require("../assets/1.png"),
+  require("../assets/mobile_app/3.png"),
+  require("../assets/mobile_app/2.png"),
+  require("../assets/mobile_app/1.png"),
 ];
 
 const Welcome = ({ navigation }) => {

@@ -9,7 +9,7 @@ import {
   StackedBarChart,
 } from "react-native-chart-kit";
 import axios from "axios";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../AuthContext";
 import { useNavigation } from "@react-navigation/native";
 
 const ChartYear = ({ navigation }) => {
@@ -33,7 +33,7 @@ const ChartYear = ({ navigation }) => {
   useEffect(() => {
     axios
       .get(
-        `https://finance-api-kgh1.onrender.com/api/getTotalExpensesMonthByYear/${id}/2023`,
+        `https://finance-api-kgh1.onrender.com/api/getTotalExpensesMonthByYear/${id}/2024`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -48,7 +48,7 @@ const ChartYear = ({ navigation }) => {
 
     axios
       .get(
-        `https://finance-api-kgh1.onrender.com/api/getTotalIncomesMonthByYear/${id}/2023`,
+        `https://finance-api-kgh1.onrender.com/api/getTotalIncomesMonthByYear/${id}/2024`,
         {
           headers: {
             "Content-Type": "application/json",

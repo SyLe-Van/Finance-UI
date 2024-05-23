@@ -17,16 +17,22 @@ export default function Input({
   onChangeText,
   editable,
   keyboardType,
+  widthText,
 }) {
   return (
-    <View style={[styles.wrapper, { width: width }]}>
+    <View style={[styles.wrapper, { width: width }, { widthText: widthText }]}>
       <Text style={styles.text}>{title}:</Text>
       <TouchableOpacity onPress={onDelete}>
         <TextInput
           placeholder={placeholder}
           value={value}
           onChangeText={onChangeText}
-          style={[styles.TextInputContainer, { width: 150 }]}
+          style={[
+            styles.TextInputContainer,
+            {
+              width: widthText,
+            },
+          ]}
           editable={editable}
           keyboardType={keyboardType}
         />
@@ -42,7 +48,7 @@ const styles = StyleSheet.create({
     height: 45,
     alignItems: "center",
     margin: 7,
-    backgroundColor: "#CF89A5",
+    backgroundColor: "#ffffff",
     borderRadius: 10,
     marginTop: 4,
   },

@@ -18,7 +18,6 @@ const Home = ({ route }) => {
   const [expenses, setExpenses] = useState([]);
   const [income, setIncome] = useState([]);
   useEffect(() => {
-    // console.log(id);
     axios
       .get(`https://finance-api-kgh1.onrender.com/api/getUser/${id}`, {
         headers: {
@@ -170,10 +169,10 @@ const Home = ({ route }) => {
       </LinearGradient>
       <LinearGradient colors={["#BEADFA", "#FDCEDF"]} style={styles.body}>
         <View style={styles.incomeDetail}>
-          <FinancialList data={income} type="Income" />
+          <FinancialList data={income} type="Incomes" />
         </View>
         <View style={styles.expenseDetail}>
-          <FinancialList data={expenses} type="Expense" />
+          <FinancialList data={expenses} type="Expenses" />
         </View>
       </LinearGradient>
     </SafeAreaView>
@@ -237,12 +236,12 @@ const styles = StyleSheet.create({
   },
   expenseDetail: {
     margin: 18,
+    marginTop: 3,
     backgroundColor: "#ffffff",
+    height: 400,
     padding: 20,
     borderRadius: 20,
-    marginTop: 10,
     maxHeight: 300,
-    // backgroundColor: "black",
   },
   incomeDetail: {
     margin: 18,
@@ -250,7 +249,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 20,
     maxHeight: 200,
-    marginTop: 10,
+    marginTop: 3,
   },
   expenseHeader: {
     fontWeight: "bold",
@@ -271,13 +270,10 @@ const styles = StyleSheet.create({
   },
   expenseCategory: {
     flex: 1,
-    // marginRight: 130,
-    // justifyContent: 'space-between',
-    // alignItems: 'center',
   },
   expenseDetails: {
     flex: 1,
-    // flexDirection: 'column',
+
     marginLeft: 170,
   },
   divider: {

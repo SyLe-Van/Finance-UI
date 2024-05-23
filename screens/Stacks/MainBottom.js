@@ -1,7 +1,8 @@
 import React from "react";
-import IonIcon from "react-native-vector-icons/Ionicons";
+import * as Font from "expo-font";
+import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import ChartStack from "../ChartStack";
+import ChartStack from "./ChartStack";
 import AccountStack from "./AccountStack";
 import AddStack from "./AddStack";
 import HomeStack from "./HomeStack";
@@ -10,7 +11,7 @@ const Bottom = createBottomTabNavigator();
 
 const TabIcon = ({ name, focused }) => {
   return (
-    <IonIcon name={name} size={25} color={focused ? "#4390f7" : "#BEADFA"} />
+    <Ionicons name={name} size={25} color={focused ? "#4390f7" : "#BEADFA"} />
   );
 };
 
@@ -27,8 +28,10 @@ const MainBottom = () => {
     <Bottom.Navigator
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: "#ffffff",
+          backgroundColor: "#FDCEDF",
           borderTopWidth: 0,
+          borderTopWidth: 0.5,
+          borderTopColor: "#BEADFA",
         },
       }}
     >

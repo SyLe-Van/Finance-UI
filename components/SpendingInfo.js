@@ -12,28 +12,32 @@ export default function SpendingInfo({
   onNoteChange,
   onMemberChange,
 }) {
-  // console.log("members: ", members);
-  const memberDropdownData = members
-    ? members.map((member) => ({
-        label: member.member_name,
-        value: member._id,
-      }))
-    : [];
-  // console.log("Dropdown data:", memberDropdownData);
-  // console.log("Selected member:", selectedMember);
-
-  useEffect(() => {}, [value, note]);
-
+  const [memberDropdownData, setMemberDropdownData] = useState([]);
+  const [selectedMemberObject, setSelectedMemberObject] = useState(null);
   const [prevSelectedMember, setPrevSelectedMember] = useState(null);
 
+  useEffect(() => {
+    const data = members
+      ? members.map((member) => ({
+          label: member.member_name,
+          value: member._id,
+        }))
+      : [];
+    setMemberDropdownData(data);
+    const selectedObject = data.find(
+      (member) => member.value === selectedMember
+    );
+    setSelectedMemberObject(selectedObject);
+  }, [members, selectedMember]);
+  // console.log("members", members);
+  console.log("selectedMember", selectedMember);
+  console.log("MemberObject", selectedMemberObject);
   useEffect(() => {
     if (prevSelectedMember !== selectedMember) {
       setPrevSelectedMember(selectedMember);
     }
   }, [selectedMember]);
-  // const selectedMemberId = members.find(
-  //   (member) => member.member_name === selectedMember
-  // )?._id;
+
   return (
     <View style={styles.infoContainer}>
       <View style={styles.name_cost}>
@@ -43,7 +47,7 @@ export default function SpendingInfo({
           labelField="label"
           valueField="value"
           placeholder="Select member"
-          value={selectedMember}
+          value={selectedMemberObject ? selectedMemberObject.value : null}
           onChange={(item) => {
             if (item && onMemberChange) {
               onMemberChange(item.value);
@@ -52,8 +56,9 @@ export default function SpendingInfo({
         />
         <Input
           title="Cost"
-          placeholder="$"
+          placeholder="VND"
           width={150}
+          widthText={90}
           onChangeText={(text) => {
             if (onValueChange) {
               onValueChange(text ? text.toString() : "");
@@ -66,8 +71,9 @@ export default function SpendingInfo({
       <View style={styles.note}>
         <Input
           title="Notes"
-          placeholder="A banana"
+          placeholder="..."
           width={315}
+          widthText={240}
           onChangeText={(text) => {
             if (onNoteChange) {
               onNoteChange(text.toString());
@@ -84,9 +90,8 @@ const styles = StyleSheet.create({
   infoContainer: {
     marginTop: 5,
     height: 150,
-    width: 350,
+    width: 200,
     borderRadius: 10,
-    backgroundColor: "#EDA2DC",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -95,11 +100,11 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
   },
-  note: {},
+
   dropdown: {
     width: 150,
     height: 45,
-    backgroundColor: "#CF89A5",
+    backgroundColor: "#ffffff",
     borderRadius: 10,
     paddingHorizontal: 12,
     marginTop: 4,

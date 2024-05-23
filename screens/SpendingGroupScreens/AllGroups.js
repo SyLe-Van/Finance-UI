@@ -9,9 +9,9 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { useState, useEffect, useContext } from "react";
-import Display from "../components/Display";
-import ButtonHandler from "../components/ButtonHandler";
-import { AuthContext } from "./AuthContext";
+import Display from "../../components/Display";
+import ButtonHandler from "../../components/ButtonHandler";
+import { AuthContext } from "../AuthContext";
 import axios from "axios";
 export default function AllGroups() {
   const navigation = useNavigation();
@@ -29,8 +29,8 @@ export default function AllGroups() {
           `https://finance-api-kgh1.onrender.com/api/getAllGroups/${id}`
         );
         const data = response.data;
+        data.reverse();
         setGroupNames(data);
-        // console.log("DATA API:", data);
       } catch (error) {
         console.error("Error fetching user groups:", error);
       }

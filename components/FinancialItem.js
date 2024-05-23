@@ -20,7 +20,7 @@ export default function FinancialItem({ type, item }) {
   const navigation = useNavigation();
 
   function handlePressIn() {
-    const newColor = type === "Income" ? "#FDCEDF" : "#BEADFA";
+    const newColor = type === "Incomes" ? "#FDCEDF" : "#BEADFA";
     setBackgroundColor(newColor);
   }
 
@@ -91,7 +91,9 @@ export default function FinancialItem({ type, item }) {
   }
   async function handleDeleteItem(itemId) {
     // get Id item
-    const endpointId = type === "Income" ? "getIncome" : "getExpense";
+    const endpointId = type === "Incomes" ? "getIncome" : "getExpense";
+    console.log("endpointId", endpointId);
+    console.log("ItemId", itemId);
     try {
       const responseData = await axios.get(
         `https://finance-api-kgh1.onrender.com/api/${endpointId}/${id}/${itemId}`,
@@ -104,7 +106,7 @@ export default function FinancialItem({ type, item }) {
       const ItemId = responseData.data._id;
       // delete item
       const endpointDelete =
-        type === "Income" ? "deleteIncome" : "deleteExpenses";
+        type === "Incomes" ? "deleteIncome" : "deleteExpenses";
 
       await axios.delete(
         `https://finance-api-kgh1.onrender.com/api/${endpointDelete}/${id}/${ItemId}`
@@ -117,7 +119,7 @@ export default function FinancialItem({ type, item }) {
   }
   //handleUpdateItem
   async function handleUpdateItem(type) {
-    if (type === "Income") {
+    if (type === "Incomes") {
       navigation.navigate("UpdateIncome", { itemId: item._id });
     } else {
       navigation.navigate("UpdateExpenses", { itemId: item._id });
@@ -128,7 +130,7 @@ export default function FinancialItem({ type, item }) {
       onPressIn={handlePressIn}
       onPressOut={handlePressOut}
       onLongPress={handleLongPress}
-      underlayColor={type === "Income" ? "#FDCEDF" : "#BEADFA"}
+      underlayColor={type === "Incomes" ? "#FDCEDF" : "#BEADFA"}
       style={[styles.container, { backgroundColor: backgroundColor }]}
     >
       <View style={styles.expenseRow}>
@@ -136,13 +138,13 @@ export default function FinancialItem({ type, item }) {
           <Text
             style={{
               fontWeight: "bold",
-              width: 110,
+              width: 120,
               paddingBottom: 5,
               paddingTop: 2,
               fontSize: 16,
             }}
           >
-            {type === "Income"
+            {type === "Incomes"
               ? item.categoriesIncome
               : item.categoriesExpenses}
           </Text>
@@ -155,12 +157,12 @@ export default function FinancialItem({ type, item }) {
         <View style={styles.expenseDetails}>
           <Text
             style={{
-              color: type === "Income" ? "#1F8A70" : "#D80032",
+              color: type === "Incomes" ? "#1F8A70" : "#D80032",
               fontWeight: "bold",
               fontSize: 17,
             }}
           >
-            {type === "Income" ? "+ " : "- "} {parseFloat(item.value || 0)} $
+            {type === "Incomes" ? "+ " : "- "} {parseFloat(item.value || 0)} $
           </Text>
           <Text style={{ fontSize: 12, marginTop: 5 }}>{item.date}</Text>
         </View>

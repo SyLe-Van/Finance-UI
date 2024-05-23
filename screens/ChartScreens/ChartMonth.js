@@ -11,7 +11,7 @@ import {
 import { PieChart } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
 import axios from "axios";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../AuthContext";
 import Chart from "./Chart";
 import ChartIncome from "./ChartIncome";
 import { LinearGradient } from "expo-linear-gradient";
@@ -29,17 +29,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: "#FCE9F1",
+    // backgroundColor: "#FDCEDF",
   },
   chartContainer: {
-    backgroundColor: "white",
-    borderBottomLeftRadius: 10,
-    width: "100%",
-    backgroundColor: "#FCE9F1",
-  },
-  chartSpacing: {
-    // marginBottom: 200,
-    backgroundColor: "#F2AFEF",
+    width: 350,
+    marginBottom: 10,
+    marginLeft: 10,
   },
   text: {
     fontSize: 20,
@@ -48,19 +43,18 @@ const styles = StyleSheet.create({
     color: "#000000",
   },
   header: {
-    backgroundColor: "#F2AFEF",
+    // backgroundColor: "#F2AFEF",
     position: "relative",
     height: 180,
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
   },
   body: {
-    marginTop: -30,
-    backgroundColor: "#ffffff",
+    marginTop: -50,
     borderRadius: 20,
     marginLeft: 20,
     marginRight: 20,
-    flex: 1, // Add this line
+    flex: 1,
   },
   button: {
     padding: 12,
@@ -70,16 +64,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonContainer: {
-    marginTop: 30,
-    marginLeft: 60,
-    marginRight: 60,
-    marginBottom: 40,
+    marginTop: 10,
+    marginHorizontal: 60,
+    paddingBottom: 20,
   },
   buttons: {
     borderRadius: 20,
   },
   body1: {
     borderRadius: 20,
+    backgroundColor: "#ffffff",
+  },
+  body2: {
+    marginTop: 10,
+    borderRadius: 20,
+    backgroundColor: "#ffffff",
   },
   rowContainer: {
     flexDirection: "row",
@@ -182,83 +181,82 @@ const ChartMonth = ({ route }) => {
   };
   return (
     <ScrollView>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.textheader}>
-            <View style={styles.rowContainer}>
-              <Text style={styles.label}>Income:</Text>
-              <Text style={styles.value}>{totalIncomeMonth} đ</Text>
-            </View>
-
-            <View style={styles.rowContainer}>
-              <Text style={styles.label}>Expenses:</Text>
-              <Text style={styles.value}>{totalExpensesMonth} đ</Text>
-            </View>
-
-            <View style={styles.rowContainer}>
-              <Text style={styles.label}>Residual amount:</Text>
-              <Text style={styles.value}>
-                {totalIncomeMonth - totalExpensesMonth} đ
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View style={styles.body}>
-          <View style={styles.body1}>
-            <Text
-              style={{
-                fontSize: 20,
-                fontWeight: "bold",
-                textAlign: "center",
-                color: "#000000",
-                marginTop: 20,
-              }}
-            >
-              Expenses Chart
-            </Text>
-            <View style={[styles.chartContainer, styles.chartSpacing]}>
-              <Chart expenses={expenses} />
+      <LinearGradient colors={["#BEADFA", "#FDCEDF"]} style={styles.container}>
+        <SafeAreaView style={styles.container}>
+          <View style={styles.header}>
+            <View style={styles.textheader}>
+              <View style={styles.rowContainer}>
+                <Text style={styles.label}>Income:</Text>
+                <Text style={styles.value}>{totalIncomeMonth} đ</Text>
+              </View>
+              <View style={styles.rowContainer}>
+                <Text style={styles.label}>Expenses:</Text>
+                <Text style={styles.value}>{totalExpensesMonth} đ</Text>
+              </View>
+              <View style={styles.rowContainer}>
+                <Text style={styles.label}>Residual amount:</Text>
+                <Text style={styles.value}>
+                  {totalIncomeMonth - totalExpensesMonth} đ
+                </Text>
+              </View>
             </View>
           </View>
-          <View style={styles.body1}>
-            <Text style={{ backgroundColor: "#FCE9F1" }}></Text>
-            <Text
-              style={{
-                fontSize: 20,
-                fontWeight: "bold",
-                textAlign: "center",
-                color: "#000000",
-                marginTop: 20,
-              }}
-            >
-              Income Chart
-            </Text>
-            <View style={styles.chartContainer}>
-              <ChartIncome incomes={incomes} />
-            </View>
-          </View>
-        </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={{ borderRadius: 20 }}
-            onPress={viewChartYearHandle}
-          >
-            <LinearGradient
-              colors={["#F875AA", "#BEADFA"]}
-              style={{ borderRadius: 20 }}
-            >
+          <View style={styles.body}>
+            <View style={styles.body1}>
               <Text
-                style={[
-                  styles.button,
-                  { color: "#fff", fontSize: 18, fontWeight: "bold" },
-                ]}
+                style={{
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  color: "#000000",
+                  marginTop: 20,
+                }}
               >
-                View yearly chart
+                Expenses Chart
               </Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
+              <View style={[styles.chartContainer, styles.chartSpacing]}>
+                <Chart expenses={expenses} />
+              </View>
+            </View>
+            <View style={styles.body2}>
+              <Text
+                style={{
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  color: "#000000",
+                  marginTop: 20,
+                }}
+              >
+                Income Chart
+              </Text>
+              <View style={styles.chartContainer}>
+                <ChartIncome incomes={incomes} />
+              </View>
+            </View>
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={{ borderRadius: 20 }}
+              onPress={viewChartYearHandle}
+            >
+              <LinearGradient
+                colors={["#F875AA", "#BEADFA"]}
+                style={{ borderRadius: 20 }}
+              >
+                <Text
+                  style={[
+                    styles.button,
+                    { color: "#fff", fontSize: 18, fontWeight: "bold" },
+                  ]}
+                >
+                  View yearly chart
+                </Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </LinearGradient>
     </ScrollView>
   );
 };

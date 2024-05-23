@@ -1,12 +1,21 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import AddExpenses from "../AddExpenses";
-import AddIncome from "../AddIncome";
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+} from "@react-navigation/stack";
+import AddExpenses from "../FinancialScreens/AddExpenses";
+import AddIncome from "../FinancialScreens/AddIncome";
 
 const Stack = createStackNavigator();
 const AddStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        gestureEnabled: true,
+        gestureDirection: "horizontal",
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+      }}
+    >
       <Stack.Screen
         name="AddExpenses"
         component={AddExpenses}

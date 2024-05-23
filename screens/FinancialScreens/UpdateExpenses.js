@@ -1,90 +1,64 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRoute } from "react";
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Alert,
   ScrollView,
+  Alert,
   KeyboardAvoidingView,
 } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
 import CalendarPicker from "react-native-calendar-picker";
 import { Dropdown } from "react-native-element-dropdown";
 import { format } from "date-fns";
+import { AuthContext } from "../AuthContext";
 import axios from "axios";
-import { AuthContext } from "./AuthContext";
 import { LinearGradient } from "expo-linear-gradient";
 const data = [
-  { label: "Salary", value: "0" },
-  { label: "Allowance", value: "0" },
-  { label: "Bonus", value: "0" },
-  { label: "Investment", value: "0" },
+  { label: "Food", value: "0" },
+  { label: "Rent", value: "0" },
+  { label: "Shopping", value: "0" },
+  { label: "Entertainment", value: "0" },
+  { label: "Transport", value: "0" },
 ];
-const UpdateIncome = ({ navigation, route }) => {
+const UpdateExpenses = ({ navigation, route }) => {
   const { id, updateData, setUpdateData } = useContext(AuthContext);
-  const [isAddExpensesSelected, setIsAddExpensesSelected] = useState(false);
-  const [isAddIncomeSelected, setIsAddIncomeSelected] = useState(true);
-  const [day, setDay] = useState(format(new Date(), "yyyy-MM-dd"));
-  const [numberIncome, setNumberIncome] = React.useState("");
-  const [note, setNote] = React.useState("");
-  const [incomeCategory, setIncomeCategory] = useState("");
-  const [selectedIncomeDate, setSelectedIncomeDate] = useState(new Date());
-  const { itemId } = route.params;
 
+  const [isAddExpensesSelected, setIsAddExpensesSelected] = useState(true);
+  const [isAddIncomeSelected, setIsAddIncomeSelected] = useState(false);
+
+  const [number, setNumber] = React.useState("");
+  const [text, setText] = React.useState("");
+  const [expenses, setExpenses] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [day, setDay] = useState(format(new Date(), "yyyy-MM-dd"));
+  const { itemId } = route.params;
   useEffect(() => {
-    fetchIncomeDetails(itemId);
+    fetchExpenseDetails(itemId);
   }, [itemId]);
 
-  const fetchIncomeDetails = async (itemId) => {
+  const fetchExpenseDetails = async (itemId) => {
     try {
       const response = await axios.get(
-        `https://finance-api-kgh1.onrender.com/api/getIncome/${id}/${itemId}`
+        `https://finance-api-kgh1.onrender.com/api/getExpense/${id}/${itemId}`
       );
-      const incomeDetails = response.data;
+      const expenseDetails = response.data;
       // Update state with fetched expense details
-      setNumberIncome(
-        incomeDetails.value ? incomeDetails.value.toString() : ""
-      );
-      setNote(incomeDetails.note);
-      setIncomeCategory(incomeDetails.categoriesIncome);
-      setDay(incomeDetails.date);
-      setSelectedIncomeDate(new Date(incomeDetails.date));
+      setNumber(expenseDetails.value.toString());
+      setText(expenseDetails.note);
+      setSelectedCategory(expenseDetails.categoriesExpenses);
+      setDay(expenseDetails.date);
+      setSelectedDate(new Date(expenseDetails.date));
       setUpdateData(!updateData);
     } catch (error) {
       console.error("Error fetching expense details: ", error);
     }
   };
-  const handleSubmitIncome = async () => {
-    try {
-      const updatedIncome = {
-        categoriesIncome: incomeCategory,
-        date: day,
-        value: parseFloat(numberIncome),
-        note: note,
-      };
-      await axios.put(
-        `https://finance-api-kgh1.onrender.com/api/updateIncome/${id}/${itemId}`,
-        updatedIncome
-      );
-      setUpdateData((prevData) => !prevData);
-      navigation.navigate("Home");
-    } catch (error) {
-      console.error("Error updating income: ", error);
-      Alert.alert("Error", "Failed to update income. Please try again later.");
-    }
-  };
-
-  useFocusEffect(() => {
-    setIsAddExpensesSelected(false);
-    setIsAddIncomeSelected(true);
-  });
-
   useEffect(() => {
-    setSelectedIncomeDate(new Date());
+    setSelectedDate(new Date());
   }, []);
-
   const onDateChange = (date, type) => {
     if (type === "DATE_NOW") {
       return;
@@ -94,32 +68,39 @@ const UpdateIncome = ({ navigation, route }) => {
       const month = selectedDate.getMonth() + 1;
       const year = selectedDate.getFullYear();
       const formattedDate = `${year}-${month}-${day}`;
-      setSelectedIncomeDate(selectedIncomeDate);
+      setSelectedDate(selectedDate);
       setDay(formattedDate);
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const updatedExpense = {
+        categoriesExpenses: selectedCategory,
+        date: day,
+        value: parseFloat(number),
+        note: text,
+      };
+      await axios.put(
+        `https://finance-api-kgh1.onrender.com/api/updateExpenses/${id}/${itemId}`,
+        updatedExpense
+      );
+      setUpdateData((prevData) => !prevData);
+      navigation.navigate("Home");
+    } catch (error) {
+      console.error("Error updating expense: ", error);
+      Alert.alert("Error", "Failed to update expense. Please try again later.");
     }
   };
 
   const handleDropdownFocus = () => {};
 
   const handleDropdownBlur = () => {};
-  const handleCategoryPress = (category) => {
-    setIncomeCategory(category);
-  };
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={[
-        styles.categoryItem,
-        item === incomeCategory ? styles.selectedCategoryItem : {},
-      ]}
-      onPress={() => handleCategoryPress(item)}
-    >
-      <Text style={styles.categoryText}>{item}</Text>
-    </TouchableOpacity>
-  );
+
   return (
     <ScrollView style={styles.rootContainer}>
       <KeyboardAvoidingView behavior="position">
-        <View style={styles.container}>
+        <View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={[
@@ -129,7 +110,6 @@ const UpdateIncome = ({ navigation, route }) => {
               onPress={() => {
                 setIsAddExpensesSelected(true);
                 setIsAddIncomeSelected(false);
-                navigation.navigate("AddExpenses");
               }}
             >
               <Text
@@ -141,7 +121,7 @@ const UpdateIncome = ({ navigation, route }) => {
                 Expense
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity
+            <View
               style={[
                 styles.button,
                 isAddIncomeSelected ? styles.selectedButton : {},
@@ -149,6 +129,7 @@ const UpdateIncome = ({ navigation, route }) => {
               onPress={() => {
                 setIsAddExpensesSelected(false);
                 setIsAddIncomeSelected(true);
+                navigation.navigate("AddIncome");
               }}
             >
               <Text
@@ -159,9 +140,9 @@ const UpdateIncome = ({ navigation, route }) => {
               >
                 Income
               </Text>
-            </TouchableOpacity>
+            </View>
           </View>
-          {!isAddExpensesSelected ? (
+          {isAddExpensesSelected ? (
             <View style={styles.addContainer}>
               <View style={styles.calendarView}>
                 <CalendarPicker
@@ -187,32 +168,30 @@ const UpdateIncome = ({ navigation, route }) => {
                   previousTitle="Previous"
                   nextTitle="Next"
                   todayBackgroundColor="#e6ffe6"
-                  selectedDayColor="#66ff33"
+                  selectedDayColor="#BEADFA"
                   selectedDayTextColor="#000000"
                   scaleFactor={375}
                   textStyle={{
                     color: "#000000",
                   }}
-                  selected={selectedIncomeDate}
+                  selected={selectedDate}
                   onDateChange={onDateChange}
                 />
               </View>
               <View style={styles.horizontalLine} />
               <View style={styles.inputContainer}>
-                <View style={[styles.income, { marginLeft: 8 }]}>
-                  <Text style={styles.text}>Income money</Text>
+                <View style={[styles.expense]}>
+                  <Text style={styles.text}>Expense money</Text>
                   <TextInput
                     placeholder="$"
-                    value={numberIncome}
+                    value={number}
                     style={[styles.TextInputContainer, { height: 30 }]}
-                    onChangeText={(numberIncome) =>
-                      setNumberIncome(numberIncome)
-                    }
+                    onChangeText={(number) => setNumber(number)}
                     keyboardType="numeric"
                   />
                 </View>
-                <View style={styles.income}>
-                  <Text style={[styles.text, { marginLeft: -60 }]}>Date</Text>
+                <View style={styles.expense}>
+                  <Text style={[styles.text, { marginLeft: -70 }]}>Date</Text>
                   <View>
                     <Text
                       style={[
@@ -225,19 +204,27 @@ const UpdateIncome = ({ navigation, route }) => {
                     </Text>
                   </View>
                 </View>
-                <View style={styles.income}>
-                  <Text style={[styles.text, { marginLeft: -8 }]}>
+                <View style={styles.expense}>
+                  <Text style={[styles.text, { marginLeft: -15 }]}>
                     Description
                   </Text>
                   <TextInput
                     placeholder="Typing description"
-                    value={note}
-                    onChangeText={(note) => setNote(note)}
+                    value={text}
+                    onChangeText={(text) => setText(text)}
                     style={[styles.TextInputContainer, { marginRight: -15 }]}
+                    multiline={true}
+                    numberOfLines={4}
+                    onContentSizeChange={(e) => {
+                      const { contentSize } = e.nativeEvent;
+                      if (contentSize.height > 220) {
+                        setText(text + "\n");
+                      }
+                    }}
                   />
                 </View>
-                <View style={[styles.income, { marginBottom: 10 }]}>
-                  <Text style={[styles.text, { marginLeft: -30 }]}>
+                <View style={[styles.expense, { marginBottom: 10 }]}>
+                  <Text style={[styles.text, { marginRight: 57 }]}>
                     Category
                   </Text>
                   <Dropdown
@@ -245,19 +232,19 @@ const UpdateIncome = ({ navigation, route }) => {
                     data={data}
                     labelField="label"
                     valueField="value"
-                    placeholder={incomeCategory}
-                    label={incomeCategory}
+                    placeholder={selectedCategory}
+                    label={selectedCategory}
                     onFocus={handleDropdownFocus}
                     onBlur={handleDropdownBlur}
                     onChange={(item) => {
-                      setIncomeCategory(item.label);
+                      setSelectedCategory(item.label);
                     }}
                   />
                 </View>
               </View>
             </View>
           ) : null}
-          <TouchableOpacity onPress={handleSubmitIncome}>
+          <TouchableOpacity onPress={handleSubmit}>
             <LinearGradient
               colors={["#F875AA", "#BEADFA"]}
               style={styles.buttonAdd}
@@ -265,7 +252,7 @@ const UpdateIncome = ({ navigation, route }) => {
               <Text
                 style={{ color: "#ffffff", fontSize: 19, textAlign: "center" }}
               >
-                Update your income
+                Update your expense
               </Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -276,7 +263,7 @@ const UpdateIncome = ({ navigation, route }) => {
 };
 const styles = StyleSheet.create({
   rootContainer: {
-    backgroundColor: "#FCE9F1",
+    backgroundColor: "#FDCEDF",
   },
   title: {
     fontSize: 28,
@@ -293,7 +280,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     marginLeft: 10,
     marginRight: 10,
-    marginTop: 70,
+    marginTop: 20,
   },
   button: {
     flex: 1,
@@ -317,9 +304,6 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 15,
   },
-  horizontalLine: {
-    marginVertical: 8,
-  },
   chatItem: {
     flexDirection: "row",
     alignItems: "center",
@@ -333,26 +317,29 @@ const styles = StyleSheet.create({
   lastMessage: {
     fontSize: 16,
   },
-  addContainer: {
-    padding: 10,
-    borderRadius: 10,
+  label: {
+    position: "absolute",
+    backgroundColor: "white",
+    left: 22,
+    top: 8,
+    zIndex: 999,
+    paddingHorizontal: 8,
+    fontSize: 14,
   },
   dateTimeNow: {
-    padding: 7,
+    // padding: 5,
     borderRadius: 10,
+    fontSize: 17,
   },
   addContainer: {
     padding: 10,
     borderRadius: 10,
   },
-  income: {
+  expense: {
     flexDirection: "row",
     alignContent: "center",
     alignItems: "center",
-    // marginBottom: 5,
     backgroundColor: "#ffffff",
-    // paddingLeft: 10,
-    // paddingRight: 10,
     justifyContent: "space-around",
   },
   text: {
@@ -370,18 +357,10 @@ const styles = StyleSheet.create({
     width: 220,
     height: 50,
   },
-  inputContainer: {
-    flexDirection: "column",
-    backgroundColor: "#ffffff",
-    // backgroundColor: "black",
-    borderRadius: 10,
-    height: 210,
-    justifyContent: "space-around",
-  },
   buttonAdd: {
-    marginTop: 0,
-    marginLeft: 20,
-    marginRight: 20,
+    marginTop: 10,
+    marginLeft: 10,
+    marginRight: 10,
     borderRadius: 15,
     marginBottom: 30,
     paddingBottom: 10,
@@ -397,43 +376,8 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 17,
   },
-  flatList: {
-    marginTop: 10,
-  },
-
-  toggleCategoriesButton: {
-    backgroundColor: "#ccc",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    marginVertical: 10,
-  },
-  flatList: {
-    marginTop: 10,
-  },
-
-  toggleCategoriesButton: {
-    backgroundColor: "#ccc",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    marginVertical: 10,
-  },
-
-  categoryContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 8,
-  },
-
-  arrowButton: {
-    padding: 10,
-  },
   dropdown: {
-    width: 150,
+    width: 220,
     height: 40,
     borderColor: "gray",
     borderWidth: 0.5,
@@ -441,19 +385,49 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     marginTop: 10,
   },
+
+  toggleCategoriesButton: {
+    backgroundColor: "#ccc",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  flatList: {
+    marginTop: 10,
+  },
+  toggleCategoriesButton: {
+    backgroundColor: "#ccc",
+    padding: 10,
+    borderRadius: 5,
+    alignItems: "center",
+    marginVertical: 10,
+  },
+  horizontalLine: {
+    marginVertical: 8,
+  },
+  categoryContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  inputContainer: {
+    flexDirection: "column",
+    backgroundColor: "#ffffff",
+    // backgroundColor: "black",
+    borderRadius: 10,
+    height: 210,
+    justifyContent: "space-around",
+  },
+  arrowButton: {
+    padding: 10,
+  },
   calendarView: {
     backgroundColor: "#ffffff",
     borderRadius: 10,
     padding: 0,
   },
-  expenseContainer: {
-    lexDirection: "column",
-    backgroundColor: "#ffffff",
-    borderRadius: 10,
-    height: 200,
-    justifyContent: "space-around",
-    paddingHorizontal: 10,
-  },
 });
-
-export default UpdateIncome;
+export default UpdateExpenses;

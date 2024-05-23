@@ -13,20 +13,20 @@ import {
   TouchableHighlight,
   Alert,
   Platform,
+  ImageBackground,
 } from "react-native";
 import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
-import SpendingInfo from "../components/SpendingInfo";
-import ButtonHandler from "../components/ButtonHandler";
+import SpendingInfo from "../../components/SpendingInfo";
+import ButtonHandler from "../../components/ButtonHandler";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import Display from "../components/Display";
-import { AuthContext } from "./AuthContext";
+import Display from "../../components/Display";
+import { AuthContext } from "../AuthContext";
 export default function GroupSpending() {
   const [spendingList, setSpendingList] = useState([]);
-  const [numSpending, setNumSpending] = useState(2);
+  const [numSpending, setNumSpending] = useState(1);
   const [spendingItems, setSpendingItems] = useState([
     { id: 0, name: "Spending 1" },
-    { id: 1, name: "Spending 2" },
   ]);
   const [nextId, setNextId] = useState(0);
   const [pressedIndexes, setPressedIndexes] = useState([]);
@@ -126,43 +126,59 @@ export default function GroupSpending() {
       underlayColor="#BEADFA"
       style={[styles.touch, pressedIndexes.includes(index) && styles.pressed]}
     >
-      <View style={styles.spendingInfoWrapper}>
-        <SpendingInfo
-          key={item.id}
-          members={members}
-          selectedMember={item.selectedMember}
-          value={item.value}
-          note={item.note}
-          onValueChange={(text) => {
-            const updatedItems = [...spendingItems];
-            updatedItems[index].value = text;
-            setSpendingItems(updatedItems);
-          }}
-          onNoteChange={(text) => {
-            const updatedItems = [...spendingItems];
-            updatedItems[index].note = text;
-            setSpendingItems(updatedItems);
-          }}
-          onMemberChange={(selectedMember) => {
-            const updatedItems = [...spendingItems];
-            updatedItems[index].selectedMember = selectedMember;
-            setSpendingItems(updatedItems);
-          }}
-        />
-      </View>
+      <ImageBackground
+        source={require("../../assets/backgroud-component.png")}
+        style={styles.infoContainer}
+        imageStyle={{ borderRadius: 10 }}
+      >
+        <View style={styles.spendingInfoWrapper}>
+          <SpendingInfo
+            key={item.id}
+            members={members}
+            selectedMember={item.selectedMember}
+            value={item.value}
+            note={item.note}
+            onValueChange={(text) => {
+              const updatedItems = [...spendingItems];
+              updatedItems[index].value = text;
+              setSpendingItems(updatedItems);
+            }}
+            onNoteChange={(text) => {
+              const updatedItems = [...spendingItems];
+              updatedItems[index].note = text;
+              setSpendingItems(updatedItems);
+            }}
+            onMemberChange={(selectedMember) => {
+              const updatedItems = [...spendingItems];
+              updatedItems[index].selectedMember = selectedMember;
+              setSpendingItems(updatedItems);
+            }}
+          />
+        </View>
+      </ImageBackground>
     </TouchableHighlight>
   );
 
   const saveSpendingInfo = () => {
+    // Kiểm tra xem tất cả các trường đã được điền chưa
+    for (let item of spendingItems) {
+      if (!item.selectedMember || !item.value || !item.note) {
+        alert("Please fill in all fields");
+        return;
+      }
+    }
+    // Nếu tất cả các trường đã được điền, tiếp tục như bình thường
     const spendingInfoList = spendingItems.map((item) => {
       const member = members.find(
         (member) => member._id === item.selectedMember
       );
-
+      let numberString = item.value;
+      let convertedNumber = parseInt(numberString.replace(/,/g, ""));
+      console.log(convertedNumber);
       return {
         member_id: item.selectedMember,
         member_name: member ? member.member_name : "Unknown",
-        value: item.value,
+        value: convertedNumber,
         note: item.note,
       };
     });
@@ -193,7 +209,7 @@ export default function GroupSpending() {
         style={{ flex: 1 }}
       >
         <View style={styles.nameGroup}>
-          <Display title={nameGroup} width={250} />
+          <Display title={nameGroup} width={350} />
         </View>
         <FlatList
           ref={flatListRef}
@@ -202,7 +218,11 @@ export default function GroupSpending() {
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={[
             styles.spendingInfoContainer,
-            { paddingBottom: 50 },
+            {
+              paddingBottom: 50,
+
+              alignItems: "center",
+            },
           ]}
           onContentSizeChange={() => scrollToNewestItem()}
         />
@@ -217,7 +237,7 @@ export default function GroupSpending() {
           />
         </View>
         <View style={styles.splitMoneyButton}>
-          <ButtonHandler title="Save" width={250} onPress={saveSpendingInfo} />
+          <ButtonHandler title="Save" width={350} onPress={saveSpendingInfo} />
         </View>
       </KeyboardAvoidingView>
     </LinearGradient>
@@ -229,12 +249,22 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
+  infoContainer: {
+    marginTop: 5,
+    height: 150,
+    width: 350,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 7,
+  },
   buttonContainer: {
     width: 350,
     height: 70,
     justifyContent: "center",
     alignItems: "flex-end",
     marginBottom: 30,
+    marginLeft: 16,
   },
   spendingInfoContainer: {
     flexGrow: 1,
@@ -243,7 +273,7 @@ const styles = StyleSheet.create({
   },
   splitMoneyButton: {
     marginBottom: 50,
-    marginLeft: 50,
+    alignItems: "center",
   },
   touch: {
     borderRadius: 10,
@@ -262,6 +292,5 @@ const styles = StyleSheet.create({
   },
   nameGroup: {
     marginTop: 20,
-    marginLeft: 45,
   },
 });

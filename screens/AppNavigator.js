@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import MainBottom from "./Stacks/MainBottom";
-import AuthStack from "./AuthStack";
+import AuthStack from "./Stacks/AuthStack";
 import { AuthContext } from "./AuthContext";
 
 const Stack = createStackNavigator();

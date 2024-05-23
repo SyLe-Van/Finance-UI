@@ -25,8 +25,10 @@ const VnPayWebView = ({ navigation }) => {
 
   const handleNavigation = (event) => {
     const { url } = event;
+    console.log(url);
     Keyboard.dismiss();
     if (url.includes("success=ok")) {
+      console.log("hihi");
       axios
         .put(`https://finance-api-kgh1.onrender.com/api/updateUser/${id}`, {
           headers: {
