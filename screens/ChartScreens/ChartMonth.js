@@ -32,9 +32,8 @@ const styles = StyleSheet.create({
     // backgroundColor: "#FDCEDF",
   },
   chartContainer: {
-    width: 350,
     marginBottom: 10,
-    marginLeft: 10,
+    marginLeft: 5,
   },
   text: {
     fontSize: 20,

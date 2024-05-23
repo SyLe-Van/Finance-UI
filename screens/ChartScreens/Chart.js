@@ -99,7 +99,7 @@ const Chart = ({ expenses }) => {
       <View>
         <PieChart
           data={data}
-          width={370}
+          width={347}
           height={220}
           chartConfig={chartConfig}
           accessor={"population"}

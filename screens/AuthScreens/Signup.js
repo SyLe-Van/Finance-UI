@@ -18,7 +18,9 @@ import { AuthContext } from "../AuthContext";
 import * as Animatable from "react-native-animatable";
 import { LinearGradient } from "expo-linear-gradient";
 import axios from "axios";
-import Feather from "react-native-vector-icons/Feather";
+import * as Font from "expo-font";
+import { Feather } from "@expo/vector-icons";
+
 const Signup = () => {
   const navigation = useNavigation();
   const {
@@ -195,7 +197,6 @@ const Signup = () => {
     </View>
   );
 };
-export default Signup;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -309,3 +310,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
+
+export default Signup;

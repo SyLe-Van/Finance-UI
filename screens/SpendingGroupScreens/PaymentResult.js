@@ -46,7 +46,7 @@ export default function Result({ route }) {
         <Display
           title="Total Spending: "
           value={`${totalSpending} VND`}
-          width={300}
+          width={350}
         />
         <Display title="Avarage Spending:" value={`${averageSpending} VND`} />
       </View>
@@ -67,7 +67,7 @@ export default function Result({ route }) {
       <View style={styles.allGroups}>
         <ButtonHandler
           title="All Groups"
-          width={250}
+          width={350}
           onPress={changeToAllGroups}
         />
       </View>

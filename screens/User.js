@@ -98,7 +98,7 @@ const Account = () => {
           onPress={() => MoneyTeamPressHandler()}
         >
           <Ionicons name="people-outline" size={25} color="#4390f7" />
-          <Text style={styles.menuText}>Manage Money Team</Text>
+          <Text style={styles.menuText}>Split group money</Text>
         </TouchableOpacity>
 
         <View style={styles.menuItem}>

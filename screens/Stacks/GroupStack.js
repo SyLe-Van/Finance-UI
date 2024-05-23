@@ -60,7 +60,7 @@ const GroupsStack = () => {
         name="PaymentResult"
         component={PaymentResult}
         options={{
-          headerTitle: "Payment Result",
+          headerTitle: "Split Money Result",
           headerTitleStyle: {
             fontSize: 18,
             fontWeight: "bold",

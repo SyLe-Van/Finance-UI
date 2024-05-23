@@ -22,7 +22,23 @@ const ChartStack = () => {
         name="ChartMonth"
         component={ChartMonth}
       />
-      <Stack.Screen name="ChartYear" component={ChartYear} />
+      <Stack.Screen
+        options={{
+          headerStyle: {
+            backgroundColor: "#BEADFA",
+          },
+          headerBackTitle: "Back",
+          headerTintColor: "#fff",
+          headerTitle: "Chart Year",
+          headerTitleStyle: {
+            fontWeight: "bold",
+            color: "purple",
+            fontSize: 20,
+          },
+        }}
+        name="ChartYear"
+        component={ChartYear}
+      />
     </Stack.Navigator>
   );
 };

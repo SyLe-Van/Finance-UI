@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  FlatList,
-} from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { useState, useEffect, useContext } from "react";
@@ -15,12 +9,8 @@ import { AuthContext } from "../AuthContext";
 import axios from "axios";
 export default function AllGroups() {
   const navigation = useNavigation();
-  const { id, groupId, updateData } = useContext(AuthContext);
+  const { id, updateData } = useContext(AuthContext);
   const [groupNames, setGroupNames] = useState([]);
-
-  // useEffect(() => {
-  //   console.log("members updated:", groupNames);
-  // }, [groupNames]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,7 +66,6 @@ const styles = StyleSheet.create({
   logoutButton: {
     marginTop: 590,
     marginRight: 30,
-    // borderRadius: 35,
     width: 70,
     height: 70,
   },
@@ -90,7 +79,6 @@ const styles = StyleSheet.create({
   addGroupButton: {
     width: 70,
     height: 70,
-    // backgroundColor: "green",
     marginLeft: 250,
   },
   groupContainer: {

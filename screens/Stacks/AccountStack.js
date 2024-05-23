@@ -1,7 +1,7 @@
 import User from "../User";
 import { createStackNavigator } from "@react-navigation/stack";
 import ChangeMoney from "../AccountScreens/ChangeMoney";
-import Premium from "../Premium";
+import Premium from "../PaymentScreens/Premium";
 import VnPayWebView from "../VnPayWebView";
 import FailedPayment from "../PaymentScreens/FailedPayment";
 import SucessPayment from "../PaymentScreens/SucessPayment";

@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { View, Text, ScrollView, Dimensions, StyleSheet } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+
 import {
   LineChart,
   BarChart,
@@ -65,82 +67,89 @@ const ChartYear = ({ navigation }) => {
   const { width: screenWidth } = Dimensions.get("window");
   return (
     <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.chartline1}>
-          <Text style={styles.text}>Yearly chart of expenses</Text>
-          {dataChartYearExpenses ? (
-            <LineChart
-              data={dataChartYearExpenses}
-              width={screenWidth}
-              height={256}
-              verticalLabelRotation={0}
-              chartConfig={{
-                backgroundColor: "#ffff",
-                backgroundGradientFrom: "#F78CA2",
-                backgroundGradientTo: "#A367B1",
-                decimalPlaces: 2,
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                style: {
-                  borderRadius: 16,
-                },
-                propsForDots: {
-                  r: "6",
-                  strokeWidth: "2",
-                  stroke: "#DA0C81",
-                },
-              }}
-              bezier
-            />
-          ) : (
-            <Text>Loading or No Data Available</Text>
-          )}
+      <LinearGradient colors={["#BEADFA", "#FDCEDF"]} style={styles.container}>
+        <View>
+          <View style={styles.chartline1}>
+            <Text style={styles.text}>Yearly chart of expenses</Text>
+            {dataChartYearExpenses ? (
+              <LineChart
+                data={dataChartYearExpenses}
+                width={screenWidth}
+                height={256}
+                verticalLabelRotation={0}
+                chartConfig={{
+                  backgroundColor: "#ffff",
+                  backgroundGradientFrom: "#F78CA2",
+                  backgroundGradientTo: "#A367B1",
+                  decimalPlaces: 2,
+                  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                  labelColor: (opacity = 1) =>
+                    `rgba(255, 255, 255, ${opacity})`,
+                  style: {
+                    borderRadius: 16,
+                  },
+                  propsForDots: {
+                    r: "6",
+                    strokeWidth: "2",
+                    stroke: "#DA0C81",
+                  },
+                }}
+                bezier
+              />
+            ) : (
+              <Text>Loading or No Data Available</Text>
+            )}
+          </View>
+          <View style={styles.chartline}>
+            <Text style={styles.text}>Yearly chart of income</Text>
+            {dataChartYearIncome ? (
+              <LineChart
+                data={dataChartYearIncome}
+                width={screenWidth}
+                height={256}
+                verticalLabelRotation={0}
+                chartConfig={{
+                  backgroundColor: "#ffff",
+                  backgroundGradientFrom: "#F78CA2",
+                  backgroundGradientTo: "#A367B1",
+                  decimalPlaces: 2,
+                  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                  labelColor: (opacity = 1) =>
+                    `rgba(255, 255, 255, ${opacity})`,
+                  style: {
+                    borderRadius: 16,
+                  },
+                  propsForDots: {
+                    r: "6",
+                    strokeWidth: "2",
+                    stroke: "#DA0C81",
+                  },
+                }}
+                bezier
+              />
+            ) : (
+              <Text>Loading or No Data Available</Text>
+            )}
+          </View>
         </View>
-        <View style={styles.chartline}>
-          <Text style={styles.text}>Yearly chart of income</Text>
-          {dataChartYearIncome ? (
-            <LineChart
-              data={dataChartYearIncome}
-              width={screenWidth}
-              height={256}
-              verticalLabelRotation={0}
-              chartConfig={{
-                backgroundColor: "#ffff",
-                backgroundGradientFrom: "#F78CA2",
-                backgroundGradientTo: "#A367B1",
-                decimalPlaces: 2,
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                style: {
-                  borderRadius: 16,
-                },
-                propsForDots: {
-                  r: "6",
-                  strokeWidth: "2",
-                  stroke: "#DA0C81",
-                },
-              }}
-              bezier
-            />
-          ) : (
-            <Text>Loading or No Data Available</Text>
-          )}
-        </View>
-      </View>
+      </LinearGradient>
     </ScrollView>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 10,
+
+    width: 450,
+    height: 1000,
   },
   chartline: {
-    marginTop: 10,
+    marginTop: 30,
     marginRight: 20,
   },
   chartline1: {
-    marginRight: 20,
+    marginRight: 10,
+    marginTop: 40,
   },
   text: {
     fontSize: 20,
@@ -148,6 +157,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginVertical: 5,
     color: "#000000",
+    marginTop: 10,
   },
 });
 export default ChartYear;

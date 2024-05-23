@@ -10,6 +10,9 @@ import {
   ImageBackground,
 } from "react-native";
 import axios from "axios";
+import { LogBox } from "react-native";
+
+LogBox.ignoreAllLogs();
 import { LinearGradient } from "expo-linear-gradient";
 import SpendingInfo from "../../components/SpendingInfo";
 import ButtonHandler from "../../components/ButtonHandler";

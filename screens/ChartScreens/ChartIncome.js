@@ -96,7 +96,7 @@ const ChartIncome = ({ incomes }) => {
       <View style={styles.chartContainer}>
         <PieChart
           data={data}
-          width={370}
+          width={340}
           height={220}
           chartConfig={chartConfig}
           accessor={"population"}
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "#FCE9F1",
+    // backgroundColor: "#FCE9F1",
   },
   chartContainer: {
     borderRadius: 10,

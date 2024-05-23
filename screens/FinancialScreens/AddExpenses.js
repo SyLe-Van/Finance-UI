@@ -82,7 +82,7 @@ const AddExpenses = ({ navigation }) => {
       <Text style={styles.categoryText}>{item}</Text>
     </TouchableOpacity>
   );
-
+  // const [status, setStatus] = useState(False);
   const handleSubmit = () => {
     if (number.trim() === "") {
       Alert.alert("Please type your expense!");
@@ -100,10 +100,10 @@ const AddExpenses = ({ navigation }) => {
       userId: id,
       note: text,
     };
+    console.log(objectExpenses.value);
     axios
-      .post(
-        `https://finance-api-kgh1.onrender.com/api/addExpenses`,
-        objectExpenses,
+      .get(
+        `https://finance-api-kgh1.onrender.com/api/checkExpensesLowIcome/${id}/${objectExpenses.value}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -111,9 +111,29 @@ const AddExpenses = ({ navigation }) => {
         }
       )
       .then((response) => {
-        setUpdateData(!updateData);
-        // setUpdateDataExpenses(!updateDataExpenses);
-        navigation.navigate("Home");
+        console.log(response.data);
+        if (response.data.check == true) {
+          axios
+            .post(
+              `https://finance-api-kgh1.onrender.com/api/addExpenses`,
+              objectExpenses,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            )
+            .then((response) => {
+              setUpdateData(!updateData);
+              // setUpdateDataExpenses(!updateDataExpenses);
+              navigation.navigate("Home");
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          Alert.alert("Income money smaller than Expense money");
+        }
       })
       .catch((error) => {
         console.log(error);
